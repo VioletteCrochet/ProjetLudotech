@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Détails du Client</title>
+</head>
+<body>
+    <h2>Détails du Client</h2>
+    <div th:if="${client != null}">
+        <p><strong>Nom :</strong> <span th:text="${client.nom}"></span></p>
+        <p><strong>Prénom :</strong> <span th:text="${client.prenom}"></span></p>
+        <p><strong>Email :</strong> <span th:text="${client.email}"></span></p>
+        <p><strong>Téléphone :</strong> <span th:text="${client.numTel}"></span></p>
+        <p><strong>Adresse :</strong> <span th:text="${client.rue}"></span>, <span th:text="${client.cpo}"></span> <span th:text="${client.ville}"></span></p>
+    </div>
+    <div th:if="${client == null}">
+        <p>Le client demandé n'a pas été trouvé.</p>
+    </div>
+    
+     <h2>Modifier le Client</h2>
+    <form th:action="@{/updateClient/{id}(id=${client.idClient})}" th:object="${client}" method="post">
+        <div>
+            <label for="nom">Nom :</label>
+            <input type="text" id="nom" th:field="*{nom}" />
+        </div>
+        <div>
+            <label for="prenom">Prénom :</label>
+            <input type="text" id="prenom" th:field="*{prenom}" />
+        </div>
+        <div>
+            <label for="email">Email :</label>
+            <input type="text" id="email" th:field="*{email}" />
+        </div>
+        <div>
+            <label for="numTel">Téléphone :</label>
+            <input type="text" id="numTel" th:field="*{numTel}" />
+        </div>
+        <div>
+            <label for="rue">Rue :</label>
+            <input type="text" id="rue" th:field="*{rue}" />
+        </div>
+        <div>
+            <label for="cpo">Code Postal :</label>
+            <input type="text" id="cpo" th:field="*{cpo}" />
+        </div>
+        <div>
+            <label for="ville">Ville :</label>
+            <input type="text" id="ville" th:field="*{ville}" />
+        </div>
+        <button type="submit">Modifier</button>
+    </form>
+    <a href="/clients">Retour à la liste des clients</a>
+</body>
+</html>

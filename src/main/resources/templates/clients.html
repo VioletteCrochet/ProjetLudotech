@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<form action="/addClient" method="post" th:object="${client}">
+		<div>
+			<label for="nom"> Nom :</label> <input type="text" th:field="*{nom}"
+				id="nom">
+		</div>
+		<div>
+			<label for="prenom">Prenom : </label> <input type="text"
+				th:field="*{prenom}" id="prenom">
+		</div>
+		<div>
+			<label for="email">Email : </label> <input type="text"
+				th:field="*{email}" id="email">
+		</div>
+		<div>
+			<label for="numTel">Téléphone : </label> <input type="text"
+				th:field="*{numTel}" id="numTel">
+		</div>
+		<div>
+			<label for="rue">Rue : </label> <input type="text" th:field="*{rue}"
+				id="rue">
+		</div>
+		<div>
+			<label for="cpo">Code postal : </label> <input type="text"
+				th:field="*{cpo}" id="cpo">
+		</div>
+		<div>
+			<label for="ville">Ville : </label> <input type="text"
+				th:field="*{ville}" id="ville">
+		</div>
+		<button type="submit">valider</button>
+
+
+	</form>
+	<table>
+		<tr th:each="client : ${clients}">
+			<td th:text="${client.idClient}"></td>
+			<td th:text="${client.nom}"></td>
+			<td th:text="${client.prenom}"></td>
+			<td th:text="${client.email}"></td>
+			<td th:text="${client.numTel}"></td>
+			<td><a th:href="@{/client/{id}(id=${client.idClient})}">Voir détails</a></td>
+			<td><a th:href="@{/deleteClient/{id}(id=${client.idClient})}" method="post">supprimer</a></td>
+	</table>
+
+</body>
+</html>
