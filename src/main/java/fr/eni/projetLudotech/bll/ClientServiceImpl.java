@@ -37,20 +37,14 @@ public class ClientServiceImpl implements ClientService{
 	}
 
 	@Override
-	public void deleteClient() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public List<Client> findAllClients() {
 		return clientRepo.findAllClients();
 	}
 
 
 	@Override
-	public Optional<Client> findClientById(int idClient) {
-		return clientRepo.findClientById(idClient);
+	public Optional<Client> findClientById(int id) {
+		return clientRepo.findClientById(id);
 	}
 
 

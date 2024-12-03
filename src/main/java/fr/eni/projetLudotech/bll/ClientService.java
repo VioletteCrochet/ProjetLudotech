@@ -9,7 +9,6 @@ import fr.eni.projetLudotech.exceptions.ClientNotFoundException;
 public interface ClientService {
 	
 	List<Client> findAllClients();
-	public void deleteClient();
 	public Optional<Client> findClientById(int id);
 	public void update(Client client) throws ClientNotFoundException;
 	public void delete(int id);

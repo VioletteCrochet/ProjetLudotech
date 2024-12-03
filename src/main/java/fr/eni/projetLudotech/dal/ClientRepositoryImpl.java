@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.slf4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -18,7 +19,7 @@ import fr.eni.projetLudotech.bo.Client;
 
 @Repository
 public class ClientRepositoryImpl implements ClientRepository {
-
+	
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 	private JdbcTemplate jdbcTemplate;
 
@@ -60,13 +61,11 @@ public class ClientRepositoryImpl implements ClientRepository {
 		params.put("id", id);
 
 		try {
-			// Requête avec un BeanPropertyRowMapper pour mapper les résultats à un objet
-			// Client
 			Client client = namedParameterJdbcTemplate.queryForObject(sql, params,
 					new BeanPropertyRowMapper<>(Client.class));
-			return Optional.ofNullable(client); // Retourne un Optional
+			return Optional.ofNullable(client);
 		} catch (EmptyResultDataAccessException e) {
-			// Si aucun client n'est trouvé, retourne Optional.empty()
+			
 			return Optional.empty();
 		}
 	}
@@ -75,7 +74,7 @@ public class ClientRepositoryImpl implements ClientRepository {
 	public void update(Client client) {
 		String sql = "update Clients set  nom = :nom, prenom = :prenom, email = :email, numTel = :numTel, rue = :rue, cpo = :cpo, ville = :ville where id = :id;";
 
-		// Utilisation de BeanPropertySqlParameterSource pour associer les paramètres
+		
 	    int nbRows = namedParameterJdbcTemplate.update(sql, new BeanPropertySqlParameterSource(client));
 	    
 	    if (nbRows != 1) {
@@ -84,17 +83,17 @@ public class ClientRepositoryImpl implements ClientRepository {
 	}
 	
 	public void delete(int id) {
-		// Requête SQL de suppression
+		
 		String sql = "delete from Clients where id = :id";
 
-		// Création du paramètre pour la requête
+		
 		Map<String, Object> params = new HashMap<>();
 		params.put("id", id);
 
-		// Exécution de la requête
+		
 		int nbRows = namedParameterJdbcTemplate.update(sql, params);
 
-		// Vérification que la suppression a bien eu lieu
+		
 		if (nbRows != 1) {
 			throw new RuntimeException("Aucune ligne n'a été supprimée pour le client avec l'id : " + id);
 		}

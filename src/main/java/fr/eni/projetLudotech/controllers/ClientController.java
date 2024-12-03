@@ -26,7 +26,6 @@ public class ClientController {
 	Logger logger = LoggerFactory.getLogger(ClientController.class);
 	private ClientService service;
 
-	@Autowired
 	public ClientController(ClientService service) {
 		super();
 		this.service = service;
@@ -94,9 +93,9 @@ public class ClientController {
 	public String addClient(@Valid @ModelAttribute("client") Client client, BindingResult result,
 			RedirectAttributes redirectAttr) {
 		if (result.hasErrors()) {
-			// Stocker les erreurs et les données du formulaire pour la redirection
 			redirectAttr.addFlashAttribute("org.springframework.validation.BindingResult.client", result);
 			redirectAttr.addFlashAttribute("client", client);
+			return "redirect:/clients";
 		}
 
 		service.add(client);
