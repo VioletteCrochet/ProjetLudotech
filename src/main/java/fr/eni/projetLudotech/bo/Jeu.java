@@ -144,5 +144,6 @@ public class Jeu {
 	public Integer getDuree() {
 		return duree;
 	}
+
 	
 }

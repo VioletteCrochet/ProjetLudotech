@@ -1,46 +1,73 @@
 package fr.eni.projetLudotech.bll;
 
+import java.util.List;
 import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import fr.eni.projetLudotech.bo.Client;
 import fr.eni.projetLudotech.bo.Jeu;
+import fr.eni.projetLudotech.dal.JeuRepository;
 
+@Service
 public class JeuServiceImpl implements JeuService{
 
+	@Autowired
+	private JeuRepository jeuRepo;
+	
+	public JeuServiceImpl() {
+		super();
+	}
+	//@Autowired
+		public JeuServiceImpl(JeuRepository jeuRepo) {
+			super();
+			this.jeuRepo = jeuRepo;
+		}
+	
 	@Override
-	public void delete() {
-		// TODO Auto-generated method stub
+	public List<Jeu> findAllJeux() {
 		
+		return jeuRepo.findAllJeux();
 	}
 
 	@Override
 	public Optional<Jeu> findById(Integer id) {
-		// TODO Auto-generated method stub
-		return Optional.empty();
+		return jeuRepo.findJeuById(id);
 	}
 
 	@Override
 	public void update(Jeu jeu) {
-		// TODO Auto-generated method stub
+		Optional<Jeu> jeuOpt = findById(jeu.getId());
+        if (jeuOpt.isPresent()) {
+        	jeuRepo.update(jeu);	 
+        }
 		
 	}
 
 	@Override
 	public void delete(Integer id) {
-		// TODO Auto-generated method stub
+		jeuRepo.delete(id);
 		
 	}
 
 	@Override
 	public void save(Jeu jeu) {
-		// TODO Auto-generated method stub
+		
+		if(jeu.getId()==null) {
+			this.add(jeu);
+			return;
+		}
+		this.update(jeu);
+		
 		
 	}
 
 	@Override
 	public Client add(Jeu jeu) {
-		// TODO Auto-generated method stub
+		jeuRepo.create(jeu);
 		return null;
 	}
-
 }
+
+
