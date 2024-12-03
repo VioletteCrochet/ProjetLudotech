@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS Clients, Jeux, Genres, Jeux_Genres;
+DROP TABLE IF EXISTS  Clients, Jeux, Genres, Jeux_Genres,;
 
 CREATE TABLE Clients (
     id serial Constraint PK_Clents primary key,
@@ -22,15 +22,15 @@ CREATE TABLE Jeux (
 );
 CREATE TABLE Genres (
     id serial Constraint PK_Genres PRIMARY KEY,
-    libelle VARCHAR(255) NOT NULL
+    libelle VARCHAR(255) CONSTRAINT UK_libelle_unique UNIQUE NOT NULL
 );
 
 CREATE TABLE Jeu_Genre (
     jeu_id INT,
     genre_id INT,
     PRIMARY KEY (jeu_id, genre_id),
-    FOREIGN KEY (jeu_id) REFERENCES Jeux(id),
-    FOREIGN KEY (genre_id) REFERENCES Genres(id)
+    FOREIGN KEY (jeu_id) REFERENCES Jeux(id) on delete cascade,
+    FOREIGN KEY (genre_id) REFERENCES Genres(id) on delete cascade
 );
 
 INSERT INTO Clients (nom, prenom, email, numTel, rue, cpo, ville) 
