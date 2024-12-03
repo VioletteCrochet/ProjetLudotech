@@ -64,7 +64,7 @@ public class JeuServiceImpl implements JeuService{
 	}
 
 	@Override
-	public Client add(Jeu jeu) {
+	public Jeu add(Jeu jeu) {
 		jeuRepo.create(jeu);
 		return null;
 	}
