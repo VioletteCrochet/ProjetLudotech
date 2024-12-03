@@ -1,54 +1,81 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>Détails du Client</title>
+<meta charset="UTF-8">
+<title>Détails du Client</title>
 </head>
 <body>
-    <h2>Détails du Client</h2>
-    <div th:if="${client != null}">
-        <p><strong>Nom :</strong> <span th:text="${client.nom}"></span></p>
-        <p><strong>Prénom :</strong> <span th:text="${client.prenom}"></span></p>
-        <p><strong>Email :</strong> <span th:text="${client.email}"></span></p>
-        <p><strong>Téléphone :</strong> <span th:text="${client.numTel}"></span></p>
-        <p><strong>Adresse :</strong> <span th:text="${client.rue}"></span>, <span th:text="${client.cpo}"></span> <span th:text="${client.ville}"></span></p>
-    </div>
-    <div th:if="${client == null}">
-        <p>Le client demandé n'a pas été trouvé.</p>
-    </div>
-    
-     <h2>Modifier le Client</h2>
-    <form th:action="@{/updateClient/{id}(id=${client.idClient})}" th:object="${client}" method="post">
-        <div>
-            <label for="nom">Nom :</label>
-            <input type="text" id="nom" th:field="*{nom}" />
-        </div>
-        <div>
-            <label for="prenom">Prénom :</label>
-            <input type="text" id="prenom" th:field="*{prenom}" />
-        </div>
-        <div>
-            <label for="email">Email :</label>
-            <input type="text" id="email" th:field="*{email}" />
-        </div>
-        <div>
-            <label for="numTel">Téléphone :</label>
-            <input type="text" id="numTel" th:field="*{numTel}" />
-        </div>
-        <div>
-            <label for="rue">Rue :</label>
-            <input type="text" id="rue" th:field="*{rue}" />
-        </div>
-        <div>
-            <label for="cpo">Code Postal :</label>
-            <input type="text" id="cpo" th:field="*{cpo}" />
-        </div>
-        <div>
-            <label for="ville">Ville :</label>
-            <input type="text" id="ville" th:field="*{ville}" />
-        </div>
-        <button type="submit">Modifier</button>
-    </form>
-    <a href="/clients">Retour à la liste des clients</a>
+	<h2>Détails du Client</h2>
+	<div th:if="${client != null}">
+		<p>
+			<strong>Nom :</strong> <span th:text="${client.nom}"></span>
+		</p>
+		<p>
+			<strong>Prénom :</strong> <span th:text="${client.prenom}"></span>
+		</p>
+		<p>
+			<strong>Email :</strong> <span th:text="${client.email}"></span>
+		</p>
+		<p>
+			<strong>Téléphone :</strong> <span th:text="${client.numTel}"></span>
+		</p>
+		<p>
+			<strong>Adresse :</strong> <span th:text="${client.rue}"></span>, <span
+				th:text="${client.cpo}"></span> <span th:text="${client.ville}"></span>
+		</p>
+	</div>
+	<div th:if="${client == null}">
+		<p>Le client demandé n'a pas été trouvé.</p>
+	</div>
+
+	<h2>Modifier le Client</h2>
+	<form th:action="@{/updateClient/{id}(id=${client.id})}"
+		th:object="${client}" method="post">
+		<div>
+			<label for="nom">Nom :</label> <input type="text" th:field="*{nom}"
+				id="nom">
+			<div th:if="${#fields.hasErrors('nom')}" th:errors="*{nom}"
+				class="error"></div>
+		</div>
+		<div>
+			<label for="prenom">Prénom :</label> <input type="text"
+				th:field="*{prenom}" id="prenom">
+			<div th:if="${#fields.hasErrors('prenom')}" th:errors="*{prenom}"
+				class="error"></div>
+		</div>
+		<div>
+			<label for="email">Email :</label> <input type="text"
+				th:field="*{email}" id="email">
+			<div th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
+				class="error"></div>
+		</div>
+		<div>
+			<label for="numTel">Téléphone :</label> <input type="text"
+				th:field="*{numTel}" id="numTel">
+			<div th:if="${#fields.hasErrors('numTel')}" th:errors="*{numTel}"
+				class="error"></div>
+		</div>
+		<div>
+			<label for="rue">Rue :</label> <input type="text" th:field="*{rue}"
+				id="rue">
+			<div th:if="${#fields.hasErrors('rue')}" th:errors="*{rue}"
+				class="error"></div>
+		</div>
+		<div>
+			<label for="cpo">Code Postal :</label> <input type="text"
+				th:field="*{cpo}" id="cpo">
+			<div th:if="${#fields.hasErrors('cpo')}" th:errors="*{cpo}"
+				class="error"></div>
+		</div>
+		<div>
+			<label for="ville">Ville :</label> <input type="text"
+				th:field="*{ville}" id="ville">
+			<div th:if="${#fields.hasErrors('ville')}" th:errors="*{ville}"
+				class="error"></div>
+		</div>
+		<button type="submit">Modifier</button>
+	</form>
+	<a th:href="@{/deleteClient/{id}(id=${client.id})}" method="post">supprimer</a>
+	<a href="/clients">Retour à la liste des clients</a>
 </body>
 </html>

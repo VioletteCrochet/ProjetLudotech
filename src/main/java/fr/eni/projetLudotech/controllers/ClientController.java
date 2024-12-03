@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import fr.eni.projetLudotech.bll.ClientService;
 import fr.eni.projetLudotech.bo.Client;
+import fr.eni.projetLudotech.exceptions.ClientNotFoundException;
 import jakarta.validation.Valid;
 
 @Controller
@@ -61,9 +62,24 @@ public class ClientController {
 	}
 
 	@PostMapping("/updateClient/{id}")
-	public String updateClient(@PathVariable(name = "id") int id, Model model, Client client) {
-		service.update(client);
-		return "redirect:/client/{id}";
+	public String updateClient(@PathVariable(name = "id") int id, 
+	                           @Valid @ModelAttribute("client") Client client, 
+	                           BindingResult result, 
+	                           Model model) {
+	    if (result.hasErrors()) {
+	        // Rester sur la page de modification si des erreurs sont présentes
+	        model.addAttribute("client", client); // Garder les données du formulaire
+	        return "clientDetail"; // Recharger la vue actuelle avec les erreurs
+	    }
+
+	    try {
+	        service.update(client);
+	    } catch (ClientNotFoundException e) {
+	        model.addAttribute("errorMessage", "Le client n'existe pas.");
+	        return "clientDetail"; // Recharger avec le message d'erreur
+	    }
+
+	    return "redirect:/client/" + id; // Rediriger après succès
 	}
 
 	@GetMapping("/deleteClient/{id}")
@@ -73,14 +89,17 @@ public class ClientController {
 	}
 
 	@PostMapping("/addClient")
-	public String addClient(@Valid Client client, BindingResult result, RedirectAttributes redirectAttr) {
+	public String addClient(@Valid @ModelAttribute("client") Client client, 
+	                        BindingResult result, 
+	                        RedirectAttributes redirectAttr) {
 	    if (result.hasErrors()) {
+	        // Stocker les erreurs et les données du formulaire pour la redirection
 	        redirectAttr.addFlashAttribute("org.springframework.validation.BindingResult.client", result);
 	        redirectAttr.addFlashAttribute("client", client);
-	        return "redirect:/clients";
 	    }
 
 	    service.add(client);
+	    redirectAttr.addFlashAttribute("successMessage", "Client ajouté avec succès !");
 	    return "redirect:/clients";
 	}
 

@@ -3,12 +3,13 @@ package fr.eni.projetLudotech.bll;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import fr.eni.projetLudotech.bo.Client;
 import fr.eni.projetLudotech.dal.ClientRepository;
+import fr.eni.projetLudotech.exceptions.ClientNotFoundException;
 
 @Service
 public class ClientServiceImpl implements ClientService{
@@ -16,6 +17,12 @@ public class ClientServiceImpl implements ClientService{
 	@Autowired
 	private ClientRepository clientRepo;
 	
+	
+	public ClientServiceImpl() {
+		super();
+	}
+
+
 	//@Autowired
 	public ClientServiceImpl(ClientRepository clientRepo) {
 		super();
@@ -48,14 +55,16 @@ public class ClientServiceImpl implements ClientService{
 
 
 	@Override
-	public void update(Client client) {
-		 Optional<Client> oldClientOptional = findClientById(client.getId());
-	        if (oldClientOptional.isPresent()) {
-	        	
-	            Client oldClient = oldClientOptional.get();
-	            BeanUtils.copyProperties(client, oldClient);
-	        }
-	}
+	public void update(Client client) throws ClientNotFoundException {
+   	 Optional<Client> clientOpt = findClientById(client.getId());
+        if (clientOpt.isPresent()) {
+       	 clientRepo.update(client);	 
+        }else {
+       	 //TODO gerer l'erreur
+       	 throw new ClientNotFoundException();
+        }
+       
+   }
 
 
 	@Override
@@ -65,7 +74,7 @@ public class ClientServiceImpl implements ClientService{
 	}
 	
 	@Override
-	public void save(Client entity) {
+	public void save(Client entity) throws ClientNotFoundException {
 		
 		if(entity.getId()==null) {
 			this.add(entity);

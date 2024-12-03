@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 
 import fr.eni.projetLudotech.bo.Client;
@@ -29,13 +30,14 @@ public class ClientRepositoryImpl implements ClientRepository {
 	@Override
 	public void create(Client client) {
 		// Requête SQL d'insertion
-		String sql = "insert into Client (id, nom, prenom, email, numTel, rue, cpo, ville) "
-				+ "values (:id, :nom, :prenom, :email, :numTel, :rue, :cpo, :ville)";
+		String sql = "insert into Clients (nom, prenom, email, numTel, rue, cpo, ville) "
+				+ "values (:nom, :prenom, :email, :numTel, :rue, :cpo, :ville)";
 
+		GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
 		// Utilisation de BeanPropertySqlParameterSource pour associer les valeurs
 		// automatiquement
-		int nbRows = namedParameterJdbcTemplate.update(sql, new BeanPropertySqlParameterSource(client));
-
+		int nbRows = namedParameterJdbcTemplate.update(sql, new BeanPropertySqlParameterSource(client), keyHolder, new String[]{"id"});
+		client.setId(keyHolder.getKeyAs(Integer.class));
 		// Vérification que l'insertion a bien eu lieu
 		if (nbRows != 1) {
 			throw new RuntimeException("Aucune ligne n'a été ajoutée pour le client: " + client);
@@ -44,14 +46,14 @@ public class ClientRepositoryImpl implements ClientRepository {
 	
 	@Override
 	public List<Client> findAllClients() {
-		String sql = "select * from Clients";
-		List<Client> clients = jdbcTemplate.query(sql, new BeanPropertyRowMapper<Client>());
+		String sql = "select id, nom, prenom, email, numTel, rue, cpo, ville from Clients";
+		List<Client> clients = namedParameterJdbcTemplate.query(sql, new BeanPropertyRowMapper<Client>(Client.class));
 		return clients;
 	}
 
 	@Override
 	public Optional<Client> findClientById(int id) {
-		String sql = "select * from Clients where id = :id";
+		String sql = "select id, nom, prenom, email, numTel, rue, cpo, ville from Clients where id = :id";
 
 		// Création du Map pour les paramètres nommés
 		Map<String, Object> params = new HashMap<>();
@@ -71,18 +73,19 @@ public class ClientRepositoryImpl implements ClientRepository {
 
 	@Override
 	public void update(Client client) {
-		Optional<Client> oldClientOptional = findClientById(client.getId());
-		if (oldClientOptional.isPresent()) {
+		String sql = "update Clients set  nom = :nom, prenom = :prenom, email = :email, numTel = :numTel, rue = :rue, cpo = :cpo, ville = :ville where id = :id;";
 
-			Client oldClient = oldClientOptional.get();
-			BeanUtils.copyProperties(client, oldClient);
-
-		}
+		// Utilisation de BeanPropertySqlParameterSource pour associer les paramètres
+	    int nbRows = namedParameterJdbcTemplate.update(sql, new BeanPropertySqlParameterSource(client));
+	    
+	    if (nbRows != 1) {
+	        throw new RuntimeException("Aucune ligne n'a été mise à jour pour le client avec l'id: " + client.getId());
+	    }
 	}
 	
 	public void delete(int id) {
 		// Requête SQL de suppression
-		String sql = "delete from Client where id = :id";
+		String sql = "delete from Clients where id = :id";
 
 		// Création du paramètre pour la requête
 		Map<String, Object> params = new HashMap<>();
@@ -113,6 +116,7 @@ public class ClientRepositoryImpl implements ClientRepository {
 	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
 	}
-
+	
+	
 
 }

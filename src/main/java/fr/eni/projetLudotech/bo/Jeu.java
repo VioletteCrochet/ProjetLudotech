@@ -1,21 +1,26 @@
 package fr.eni.projetLudotech.bo;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 public class Jeu {
-	private int idJeu;
+	private Integer id;
 	private String titre;
 	private String reference;
 	private String description;
 	private float tarifJour;
-	private int ageMin;
-	private int Duree;
+	private Integer ageMin;
+	private Integer duree;
+	private List<Genre> Genres = new ArrayList<>();
 	
 	public Jeu() {
 		super();
 	}
 	
-	public Jeu(int idJeu, String titre, String reference, float tarifJour, int ageMin) {
+	public Jeu(Integer id, String titre, String reference, float tarifJour, Integer ageMin) {
 		super();
-		this.idJeu = idJeu;
+		this.id = id;
 		this.titre = titre;
 		this.reference = reference;
 		this.tarifJour = tarifJour;
@@ -23,23 +28,76 @@ public class Jeu {
 	}
 	
 	
-	public Jeu(int idJeu, String titre, String reference, String description, float tarifJour, int ageMin, int duree) {
+	public Jeu(Integer id, String titre, String reference, String description, float tarifJour, Integer ageMin, Integer duree) {
 		super();
-		this.idJeu = idJeu;
+		this.id = id;
 		this.titre = titre;
 		this.reference = reference;
 		this.description = description;
 		this.tarifJour = tarifJour;
 		this.ageMin = ageMin;
-		Duree = duree;
+		duree = duree;
+	}
+
+	
+
+	public Jeu(Integer id, String titre, String reference, String description, float tarifJour, Integer ageMin, Integer duree,
+			List<Genre> genres) {
+		super();
+		this.id = id;
+		this.titre = titre;
+		this.reference = reference;
+		this.description = description;
+		this.tarifJour = tarifJour;
+		this.ageMin = ageMin;
+		this.duree = duree;
+		Genres = genres;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Jeu other = (Jeu) obj;
+		return id == other.id;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Jeu [id=");
+		builder.append(id);
+		builder.append(", titre=");
+		builder.append(titre);
+		builder.append(", reference=");
+		builder.append(reference);
+		builder.append(", description=");
+		builder.append(description);
+		builder.append(", tarifJour=");
+		builder.append(tarifJour);
+		builder.append(", ageMin=");
+		builder.append(ageMin);
+		builder.append(", duree=");
+		builder.append(duree);
+		builder.append("]");
+		return builder.toString();
 	}
 
 	//getters and setters
-	public int getIdJeu() {
-		return idJeu;
+	public Integer getId() {
+		return id;
 	}
-	public void setIdJeu(int idJeu) {
-		this.idJeu = idJeu;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 	public String getTitre() {
 		return titre;
@@ -65,17 +123,26 @@ public class Jeu {
 	public void setTarifJour(float tarifJour) {
 		this.tarifJour = tarifJour;
 	}
-	public int getAgeMin() {
+	public Integer getAgeMin() {
 		return ageMin;
 	}
-	public void setAgeMin(int ageMin) {
+	public void setAgeMin(Integer ageMin) {
 		this.ageMin = ageMin;
 	}
-	public int getDuree() {
-		return Duree;
+	public void setDuree(Integer duree) {
+		this.duree = duree;
 	}
-	public void setDuree(int duree) {
-		Duree = duree;
+
+	public List<Genre> getGenres() {
+		return Genres;
+	}
+
+	public void setGenres(List<Genre> genres) {
+		Genres = genres;
+	}
+
+	public Integer getDuree() {
+		return duree;
 	}
 	
 }
