@@ -1,4 +1,9 @@
-DROP TABLE IF EXISTS  Clients, Jeux, Genres, Jeux_Genres;
+DROP TABLE IF EXISTS  ExemplaireJeux, Clients, Jeux, Genres, Jeux_Genres;
+
+-- CREATE USER ludodbUser WITH PASSWORD 'password';
+-- GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO ludodbUser;
+-- ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO ludodbUser;
+
 
 CREATE TABLE Clients (
     id serial Constraint PK_Clents primary key,
@@ -32,6 +37,15 @@ CREATE TABLE Jeux_Genres (
     FOREIGN KEY (jeu_id) REFERENCES Jeux(id) on delete cascade,
     FOREIGN KEY (genre_id) REFERENCES Genres(id) on delete cascade
 );
+
+CREATE TABLE ExemplaireJeux (
+	id serial Constraint PK_ExemplaireJeux PRIMARY KEY,
+	codeBarre VARCHAR(50) NOT NULL,
+	louable BOOLEAN NOT NULL, 
+	jeu_id INT NOT NULL,
+	FOREIGN KEY (jeu_id) REFERENCES Jeux(id)
+);
+
 
 INSERT INTO Clients (nom, prenom, email, numTel, rue, cpo, ville) 
 VALUES 
