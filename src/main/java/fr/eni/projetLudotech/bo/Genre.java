@@ -7,16 +7,14 @@ import java.util.Objects;
 public class Genre {
 	private int id;
 	private String libelle;
-	private List<Jeu> jeux = new ArrayList<>();
 	
 	public Genre() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	
-	public Genre(int id, String libelle) {
+	public Genre( String libelle) {
 		super();
-		this.id = id;
 		this.libelle = libelle;
 	}
 
@@ -24,7 +22,6 @@ public class Genre {
 		super();
 		this.id = id;
 		this.libelle = libelle;
-		this.jeux = jeux;
 	}
 	
 	
@@ -53,8 +50,6 @@ public class Genre {
 		builder.append(id);
 		builder.append(", libelle=");
 		builder.append(libelle);
-		builder.append(", jeux=");
-		builder.append(jeux);
 		builder.append("]");
 		return builder.toString();
 	}
@@ -71,11 +66,6 @@ public class Genre {
 	public void setLibelle(String libelle) {
 		this.libelle = libelle;
 	}
-	public List<Jeu> getJeux() {
-		return jeux;
-	}
-	public void setJeux(List<Jeu> jeux) {
-		this.jeux = jeux;
-	}
+	
 	
 }

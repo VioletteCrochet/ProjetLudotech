@@ -70,7 +70,7 @@ public class Jeu {
 		Jeu other = (Jeu) obj;
 		return id == other.id;
 	}
-
+	
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -88,9 +88,12 @@ public class Jeu {
 		builder.append(ageMin);
 		builder.append(", duree=");
 		builder.append(duree);
+		builder.append(", Genres=");
+		builder.append(Genres);
 		builder.append("]");
 		return builder.toString();
 	}
+	
 
 	//getters and setters
 	public Integer getId() {
@@ -144,6 +147,8 @@ public class Jeu {
 	public Integer getDuree() {
 		return duree;
 	}
+
+	
 
 	
 }
