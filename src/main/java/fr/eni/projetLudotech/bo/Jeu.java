@@ -4,15 +4,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class Jeu {
+	@NotBlank
 	private Integer id;
+	@NotBlank
 	private String titre;
+	@NotBlank
 	private String reference;
 	private String description;
+	@NotBlank
 	private float tarifJour;
+	@NotBlank
 	private Integer ageMin;
+	
 	private Integer duree;
+	@NotBlank
 	private List<Genre> Genres = new ArrayList<>();
+	
+	private List<ExemplaireJeu> exemplaires = new ArrayList<>();
 	
 	public Jeu() {
 		super();
@@ -36,7 +47,7 @@ public class Jeu {
 		this.description = description;
 		this.tarifJour = tarifJour;
 		this.ageMin = ageMin;
-		duree = duree;
+		this.duree = duree;
 	}
 
 	
@@ -51,7 +62,22 @@ public class Jeu {
 		this.tarifJour = tarifJour;
 		this.ageMin = ageMin;
 		this.duree = duree;
-		Genres = genres;
+		this.Genres = genres;
+	}
+
+	public Jeu(@NotBlank Integer id, @NotBlank String titre, @NotBlank String reference, String description,
+			@NotBlank float tarifJour, @NotBlank Integer ageMin, Integer duree, @NotBlank List<Genre> genres,
+			List<ExemplaireJeu> exemplaires) {
+		super();
+		this.id = id;
+		this.titre = titre;
+		this.reference = reference;
+		this.description = description;
+		this.tarifJour = tarifJour;
+		this.ageMin = ageMin;
+		this.duree = duree;
+		this.Genres = genres;
+		this.exemplaires = exemplaires;
 	}
 
 	@Override
@@ -146,6 +172,14 @@ public class Jeu {
 
 	public Integer getDuree() {
 		return duree;
+	}
+
+	public List<ExemplaireJeu> getExemplaires() {
+		return exemplaires;
+	}
+
+	public void setExemplaires(List<ExemplaireJeu> exemplaires) {
+		this.exemplaires = exemplaires;
 	}
 
 	
