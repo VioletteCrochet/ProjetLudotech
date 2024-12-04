@@ -84,7 +84,7 @@ public class GenreRepositoryImpl implements GenreRepository {
     @Override
     public List<Genre> findGenresByJeuId(Integer jeuId) {
         String sql = "select g.id, g.libelle from Genres g "
-                   + "join Jeu_Genre jg on g.id = jg.genre_id "
+                   + "join Jeux_Genres jg on g.id = jg.genre_id "
                    + "where jg.jeu_id = :jeuId";
         Map<String, Object> params = new HashMap<>();
         params.put("jeuId", jeuId);

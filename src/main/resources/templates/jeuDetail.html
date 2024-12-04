@@ -1,81 +1,92 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Détails du Jeu</title>
+<meta charset="UTF-8">
+<title>Détails du Jeu</title>
 </head>
 <body>
-    <h2>Détails du Jeu</h2>
-    <div th:if="${jeu != null}">
-        <p>
-            <strong>Titre :</strong> <span th:text="${jeu.titre}"></span>
-        </p>
-        <p>
-            <strong>Référence :</strong> <span th:text="${jeu.reference}"></span>
-        </p>
-        <p>
-            <strong>Description :</strong> <span th:text="${jeu.description}"></span>
-        </p>
-        <p>
-            <strong>Tarif par jour :</strong> <span th:text="${jeu.tarifJour}"></span> €
-        </p>
-        <p>
-            <strong>Âge minimum :</strong> <span th:text="${jeu.ageMin}"></span> ans
-        </p>
-        <p>
-            <strong>Durée :</strong> <span th:text="${jeu.duree}"></span> minutes
-        </p>
-        <p>
-            <strong>Genres :</strong> 
-            <span th:each="genre : ${jeu.genres}" th:text="${genre.libelle}">, </span>
-        </p>
-    </div>
-    <div th:if="${jeu == null}">
-        <p>Le jeu demandé n'a pas été trouvé.</p>
-    </div>
+	<h2>Détails du Jeu</h2>
+	<div th:if="${jeu != null}">
+		<p>
+			<strong>Titre :</strong> <span th:text="${jeu.titre}"></span>
+		</p>
+		<p>
+			<strong>Référence :</strong> <span th:text="${jeu.reference}"></span>
+		</p>
+		<p>
+			<strong>Description :</strong> <span th:text="${jeu.description}"></span>
+		</p>
+		<p>
+			<strong>Tarif par jour :</strong> <span th:text="${jeu.tarifJour}"></span>
+			€
+		</p>
+		<p>
+			<strong>Âge minimum :</strong> <span th:text="${jeu.ageMin}"></span>
+			ans
+		</p>
+		<p>
+			<strong>Durée :</strong> <span th:text="${jeu.duree}"></span> minutes
+		</p>
+		<p>
+			<strong>Genres :</strong> <span th:each="genre : ${jeu.genres}"
+				th:text="${genre.libelle}">, </span>
+		</p>
+	</div>
+	<div th:if="${jeu == null}">
+		<p>Le jeu demandé n'a pas été trouvé.</p>
+	</div>
 
-    <h2>Modifier le Jeu</h2>
-    <form th:action="@{/updateJeu/{id}(id=${jeu.id})}" th:object="${jeu}" method="post">
-        <div>
-            <label for="titre">Titre :</label>
-            <input type="text" th:field="*{titre}" id="titre">
-            <div th:if="${#fields.hasErrors('titre')}" th:errors="*{titre}" class="error"></div>
-        </div>
-        <div>
-            <label for="reference">Référence :</label>
-            <input type="text" th:field="*{reference}" id="reference">
-            <div th:if="${#fields.hasErrors('reference')}" th:errors="*{reference}" class="error"></div>
-        </div>
-        <div>
-            <label for="description">Description :</label>
-            <textarea th:field="*{description}" id="description"></textarea>
-            <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="error"></div>
-        </div>
-        <div>
-            <label for="tarifJour">Tarif par jour :</label>
-            <input type="number" step="0.01" th:field="*{tarifJour}" id="tarifJour">
-            <div th:if="${#fields.hasErrors('tarifJour')}" th:errors="*{tarifJour}" class="error"></div>
-        </div>
-        <div>
-            <label for="ageMin">Âge minimum :</label>
-            <input type="number" th:field="*{ageMin}" id="ageMin">
-            <div th:if="${#fields.hasErrors('ageMin')}" th:errors="*{ageMin}" class="error"></div>
-        </div>
-        <div>
-            <label for="duree">Durée (minutes) :</label>
-            <input type="number" th:field="*{duree}" id="duree">
-            <div th:if="${#fields.hasErrors('duree')}" th:errors="*{duree}" class="error"></div>
-        </div>
-        <div>
-            <label for="genres">Genres :</label>
-            <select multiple th:field="*{genres}" id="genres">
-                <option th:each="genre : ${allGenres}" th:value="${genre.id}" th:text="${genre.libelle}"></option>
-            </select>
-            <div th:if="${#fields.hasErrors('genres')}" th:errors="*{genres}" class="error"></div>
-        </div>
-        <button type="submit">Modifier</button>
-    </form>
-    <a th:href="@{/deleteJeu/{id}(id=${jeu.id})}" method="post">Supprimer</a>
-    <a href="/jeux">Retour à la liste des jeux</a>
+	<h2>Modifier le Jeu</h2>
+	<form th:action="@{/updateJeu/{id}(id=${jeu.id})}" th:object="${jeu}"
+		method="post">
+		<div>
+			<label for="titre">Titre :</label> <input type="text"
+				th:field="*{titre}" id="titre">
+			<div th:if="${#fields.hasErrors('titre')}" th:errors="*{titre}"
+				class="error"></div>
+		</div>
+		<div>
+			<label for="reference">Référence :</label> <input type="text"
+				th:field="*{reference}" id="reference">
+			<div th:if="${#fields.hasErrors('reference')}"
+				th:errors="*{reference}" class="error"></div>
+		</div>
+		<div>
+			<label for="description">Description :</label>
+			<textarea th:field="*{description}" id="description"></textarea>
+			<div th:if="${#fields.hasErrors('description')}"
+				th:errors="*{description}" class="error"></div>
+		</div>
+		<div>
+			<label for="tarifJour">Tarif par jour :</label> <input type="number"
+				step="0.01" th:field="*{tarifJour}" id="tarifJour">
+			<div th:if="${#fields.hasErrors('tarifJour')}"
+				th:errors="*{tarifJour}" class="error"></div>
+		</div>
+		<div>
+			<label for="ageMin">Âge minimum :</label> <input type="number"
+				th:field="*{ageMin}" id="ageMin">
+			<div th:if="${#fields.hasErrors('ageMin')}" th:errors="*{ageMin}"
+				class="error"></div>
+		</div>
+		<div>
+			<label for="duree">Durée (minutes) :</label> <input type="number"
+				th:field="*{duree}" id="duree">
+			<div th:if="${#fields.hasErrors('duree')}" th:errors="*{duree}"
+				class="error"></div>
+		</div>
+		<div>
+			<label for="genres">Genres :</label> <select multiple
+				th:field="*{genres}" id="genres">
+				<option th:each="genre : ${allGenres}" th:value="${genre.id}"
+					th:text="${genre.libelle}"></option>
+			</select>
+			<div th:if="${#fields.hasErrors('genres')}" th:errors="*{genres}"
+				class="error"></div>
+		</div>
+		<button type="submit">Modifier</button>
+	</form>
+	<a th:href="@{/deleteJeu/{id}(id=${jeu.id})}" method="post">Supprimer</a>
+	<a href="/jeux">Retour à la liste des jeux</a>
 </body>
 </html>

@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -18,12 +20,13 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 
-import fr.eni.projetLudotech.bo.Client;
 import fr.eni.projetLudotech.bo.Genre;
 import fr.eni.projetLudotech.bo.Jeu;
 
 @Repository
 public class JeuRepositoryImpl implements JeuRepository {
+	
+	Logger logger = LoggerFactory.getLogger(JeuRepositoryImpl.class);
 	
 	private final GenreRepository genreRepository;
 	
@@ -40,7 +43,7 @@ public class JeuRepositoryImpl implements JeuRepository {
 	public void create(Jeu jeu) {
 
 		String sql = "insert into Jeux (titre, reference, description, tarifJour, ageMin, duree) "
-				+ "values (:titre, :reference, :description, :tarifjour, :ageMin, :duree)";
+				+ "values (:titre, :reference, :description, :tarifJour, :ageMin, :duree)";
 
 		GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -57,12 +60,13 @@ public class JeuRepositoryImpl implements JeuRepository {
             for (Genre genre : jeu.getGenres()) {
                 linkGenreToJeu(jeu.getId(), genre.getId());
             }
+            
         }
 	}
 	
 	// Méthode pour lier un genre à un jeu dans la table Jeu_Genre
     private void linkGenreToJeu(Integer jeuId, Integer genreId) {
-        String sql = "insert into Jeu_Genre (jeu_id, genre_id) values (:jeuId, :genreId)";
+        String sql = "insert into Jeux_Genres (jeu_id, genre_id) values (:jeuId, :genreId)";
         Map<String, Object> params = new HashMap<>();
         params.put("jeuId", jeuId);
         params.put("genreId", genreId);
@@ -70,7 +74,7 @@ public class JeuRepositoryImpl implements JeuRepository {
     }
     // Méthode pour supprimer les genres associés à un jeu
     private void removeGenresFromJeu(Integer jeuId) {
-        String sql = "delete from Jeu_Genre where jeu_id = :jeuId";
+        String sql = "delete from Jeux_Genres where jeu_id = :jeuId";
         Map<String, Object> params = new HashMap<>();
         params.put("jeuId", jeuId);
         namedParameterJdbcTemplate.update(sql, params);
@@ -83,6 +87,7 @@ public class JeuRepositoryImpl implements JeuRepository {
 		// Récupérer les genres associés pour chaque jeu
         for (Jeu jeu : jeux) {
             jeu.setGenres(genreRepository.findGenresByJeuId(jeu.getId()));
+            logger.debug(jeu.toString());
         }
 		return jeux;
 	}

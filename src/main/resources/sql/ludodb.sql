@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS  Clients, Jeux, Genres, Jeux_Genres,;
+DROP TABLE IF EXISTS  Clients, Jeux, Genres, Jeux_Genres;
 
 CREATE TABLE Clients (
     id serial Constraint PK_Clents primary key,
@@ -25,7 +25,7 @@ CREATE TABLE Genres (
     libelle VARCHAR(255) CONSTRAINT UK_libelle_unique UNIQUE NOT NULL
 );
 
-CREATE TABLE Jeu_Genre (
+CREATE TABLE Jeux_Genres (
     jeu_id INT,
     genre_id INT,
     PRIMARY KEY (jeu_id, genre_id),
@@ -52,5 +52,11 @@ VALUES
     ('Stratégie'),
     ('Aventure'),
     ('Famille');
+
+INSERT INTO Jeux_Genres (jeu_id, genre_id)
+VALUES 
+    ((SELECT id FROM Jeux WHERE reference = 'MON123'), (SELECT id FROM Genres WHERE libelle = 'Stratégie')),  -- Monopoly - Stratégie
+    ((SELECT id FROM Jeux WHERE reference = 'MON123'), (SELECT id FROM Genres WHERE libelle = 'Famille')),   -- Monopoly - Famille
+    ((SELECT id FROM Jeux WHERE reference = 'CAT456'), (SELECT id FROM Genres WHERE libelle = 'Aventure'));  -- Catan - Aventure
 	
 select * from Clients;
