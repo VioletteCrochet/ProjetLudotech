@@ -28,8 +28,8 @@
 			<strong>Durée :</strong> <span th:text="${jeu.duree}"></span> minutes
 		</p>
 		<p>
-			<strong>Genres :</strong> <span th:each="genre : ${jeu.genres}"
-				th:text="${genre.libelle}">, </span>
+			<strong>Genres :</strong> <span th:each="genre : ${jeu.genres }"
+				th:text="${genre.libelle  + '&nbsp;'}">, </span>
 		</p>
 	</div>
 	<div th:if="${jeu == null}">
@@ -79,7 +79,7 @@
 			<label for="genres">Genres :</label> <select multiple
 				th:field="*{genres}" id="genres">
 				<option th:each="genre : ${allGenres}" th:value="${genre.id}"
-					th:text="${genre.libelle}"></option>
+					th:text="${genre.libelle + '&nbsp;'}" ></option>
 			</select>
 			<div th:if="${#fields.hasErrors('genres')}" th:errors="*{genres}"
 				class="error"></div>

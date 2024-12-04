@@ -19,6 +19,7 @@ import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import fr.eni.projetLudotech.bo.Genre;
 import fr.eni.projetLudotech.bo.Jeu;
@@ -40,6 +41,7 @@ public class JeuRepositoryImpl implements JeuRepository {
     }
 
 	@Override
+	@Transactional
 	public void create(Jeu jeu) {
 
 		String sql = "insert into Jeux (titre, reference, description, tarifJour, ageMin, duree) "
@@ -64,7 +66,7 @@ public class JeuRepositoryImpl implements JeuRepository {
         }
 	}
 	
-	// Méthode pour lier un genre à un jeu dans la table Jeu_Genre
+	// Méthode pour lier un genre à un jeu dans la table Jeux_Genres
     private void linkGenreToJeu(Integer jeuId, Integer genreId) {
         String sql = "insert into Jeux_Genres (jeu_id, genre_id) values (:jeuId, :genreId)";
         Map<String, Object> params = new HashMap<>();
