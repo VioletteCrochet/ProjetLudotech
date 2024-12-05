@@ -43,7 +43,7 @@ public class JeuRepositoryImpl implements JeuRepository {
 	@Override
 	@Transactional
 	public void create(Jeu jeu) {
-
+		
 		String sql = "insert into Jeux (titre, reference, description, tarifJour, ageMin, duree) "
 				+ "values (:titre, :reference, :description, :tarifJour, :ageMin, :duree)";
 
@@ -52,7 +52,7 @@ public class JeuRepositoryImpl implements JeuRepository {
 		int nbRows = namedParameterJdbcTemplate.update(sql, new BeanPropertySqlParameterSource(jeu), keyHolder,
 				new String[] { "id" });
 		jeu.setId(keyHolder.getKeyAs(Integer.class));
-
+		logger.debug("requête addjeu passée au repository");
 		if (nbRows != 1) {
 			throw new RuntimeException("Aucune ligne n'a été ajoutée pour le jeu: " + jeu);
 		}
@@ -118,6 +118,7 @@ public class JeuRepositoryImpl implements JeuRepository {
 	}
 
 	@Override
+	@Transactional
 	public void update(Jeu jeu) {
 		String sql = "update Jeux set titre = :titre, reference = :reference, description = :description, tarifJour = :tarifJour, ageMin = :ageMin, duree = :duree where id = :id";
 

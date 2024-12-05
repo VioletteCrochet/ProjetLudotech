@@ -3,16 +3,18 @@ package fr.eni.projetLudotech.bll;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fr.eni.projetLudotech.bo.Client;
 import fr.eni.projetLudotech.bo.Jeu;
 import fr.eni.projetLudotech.dal.JeuRepository;
 
 @Service
 public class JeuServiceImpl implements JeuService{
-
+	
+	Logger logger = LoggerFactory.getLogger(JeuServiceImpl.class);
 	@Autowired
 	private JeuRepository jeuRepo;
 	
@@ -64,9 +66,9 @@ public class JeuServiceImpl implements JeuService{
 	}
 
 	@Override
-	public Jeu add(Jeu jeu) {
+	public void add(Jeu jeu) {
 		jeuRepo.create(jeu);
-		return null;
+		logger.debug("requête addJeu passée au service");
 	}
 }
 

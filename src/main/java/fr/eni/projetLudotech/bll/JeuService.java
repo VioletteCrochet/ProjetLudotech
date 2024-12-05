@@ -12,5 +12,5 @@ public interface JeuService {
 	public void update(Jeu jeu);
 	public void delete(Integer id);
 	public void save(Jeu jeu);
-	public Jeu add(Jeu jeu);
+	public void add(Jeu jeu);
 }
