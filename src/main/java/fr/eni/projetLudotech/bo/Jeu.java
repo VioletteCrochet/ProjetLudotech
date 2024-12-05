@@ -4,23 +4,28 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 public class Jeu {
-	@NotBlank
+	
 	private Integer id;
 	@NotBlank
 	private String titre;
 	@NotBlank
 	private String reference;
 	private String description;
-	@NotBlank
+	@NotNull
+	@Min(0)
 	private float tarifJour;
-	@NotBlank
+	@NotNull
+	@Min(0)
 	private Integer ageMin;
 	
 	private Integer duree;
-	@NotBlank
+	@NotEmpty
 	private List<Genre> Genres = new ArrayList<>();
 	
 	private List<ExemplaireJeu> exemplaires = new ArrayList<>();
