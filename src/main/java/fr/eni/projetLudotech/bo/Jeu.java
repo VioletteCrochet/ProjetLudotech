@@ -30,6 +30,7 @@ public class Jeu {
 	
 	private List<ExemplaireJeu> exemplaires = new ArrayList<>();
 	
+	
 	public Jeu() {
 		super();
 	}

@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -20,6 +21,7 @@ import fr.eni.projetLudotech.bo.Client;
 @Repository
 public class ClientRepositoryImpl implements ClientRepository {
 	
+	Logger logger = LoggerFactory.getLogger(ClientRepositoryImpl.class);
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 	private JdbcTemplate jdbcTemplate;
 
@@ -39,6 +41,8 @@ public class ClientRepositoryImpl implements ClientRepository {
 		// automatiquement
 		int nbRows = namedParameterJdbcTemplate.update(sql, new BeanPropertySqlParameterSource(client), keyHolder, new String[]{"id"});
 		client.setId(keyHolder.getKeyAs(Integer.class));
+
+		logger.debug(keyHolder.getKeyAs(Integer.class).toString());
 		// Vérification que l'insertion a bien eu lieu
 		if (nbRows != 1) {
 			throw new RuntimeException("Aucune ligne n'a été ajoutée pour le client: " + client);

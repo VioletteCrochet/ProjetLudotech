@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h2>Détails du Jeu</h2>
+	<div th:if="${exemplaire != null}">
+		<p>
+			<strong>Code barre :</strong> <span th:text="${exemplaire.codeBarre}"></span>
+		</p>
+		<p>
+			<strong>Louable :</strong> <span th:if="${exemplaire.louable}">oui</span>
+			<span th:if="${!exemplaire.louable}">non</span>
+		</p>
+	</div>
+	<a th:href="@{/jeu/{id}(id=${exemplaire.jeuId})}">Retour au jeu</a>
+	<a href="/jeux">Retour à la liste de jeux</a>
+	
+</body>
+</html>

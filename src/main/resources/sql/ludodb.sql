@@ -1,8 +1,8 @@
 DROP TABLE IF EXISTS  ExemplaireJeux, Clients, Jeux, Genres, Jeux_Genres;
 
--- CREATE USER ludodbUser WITH PASSWORD 'password';
--- GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO ludodbUser;
--- ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO ludodbUser;
+-- CREATE USER ludouser WITH PASSWORD 'password';
+-- GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO ludouser;
+-- ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO ludouser;
 
 
 CREATE TABLE Clients (
@@ -42,8 +42,8 @@ CREATE TABLE ExemplaireJeux (
 	id serial Constraint PK_ExemplaireJeux PRIMARY KEY,
 	codeBarre VARCHAR(50) NOT NULL,
 	louable BOOLEAN NOT NULL, 
-	jeu_id INT NOT NULL,
-	FOREIGN KEY (jeu_id) REFERENCES Jeux(id)
+	jeuId INT NOT NULL,
+	FOREIGN KEY (jeuId) REFERENCES Jeux(id)
 );
 
 
@@ -72,5 +72,18 @@ VALUES
     ((SELECT id FROM Jeux WHERE reference = 'MON123'), (SELECT id FROM Genres WHERE libelle = 'Stratégie')),  -- Monopoly - Stratégie
     ((SELECT id FROM Jeux WHERE reference = 'MON123'), (SELECT id FROM Genres WHERE libelle = 'Famille')),   -- Monopoly - Famille
     ((SELECT id FROM Jeux WHERE reference = 'CAT456'), (SELECT id FROM Genres WHERE libelle = 'Aventure'));  -- Catan - Aventure
+
+Insert into ExemplaireJeux (codeBarre, louable, jeuId)
+values
+	('1254789634516', true, 1),
+	('1254785474516', true, 1),
+	('1255748634516', true, 1),
+	('1254789631478', false, 1),
+	('1254789634516', true, 1),
+	('1254789637566', true, 2),
+	('1254758474516', true, 2),
+	('1478748634516', false, 2);
 	
-select * from Clients;
+
+
+select codebarre, louable, jeuId from ExemplaireJeux;

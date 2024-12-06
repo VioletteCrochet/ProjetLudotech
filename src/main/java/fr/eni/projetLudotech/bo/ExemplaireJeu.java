@@ -2,22 +2,31 @@ package fr.eni.projetLudotech.bo;
 
 import java.util.Objects;
 
+
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 public class ExemplaireJeu {
 	private Integer id;
+	@NotNull
+	@Size(min=13, max=13)
 	private String codeBarre;
+	@NotNull
 	private boolean louable;
-	private Jeu jeu;
+	@NotNull
+	private Integer jeuId;
 
 	public ExemplaireJeu() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public ExemplaireJeu(String codeBarre, boolean louable, Jeu jeu) {
+	public ExemplaireJeu(Integer id, String codeBarre, boolean louable, Integer jeuId) {
 		super();
+		this.id = id;
 		this.codeBarre = codeBarre;
 		this.louable = louable;
-		this.jeu = jeu;
+		this.jeuId = jeuId;
 	}
 
 	@Override
@@ -30,14 +39,14 @@ public class ExemplaireJeu {
 		builder.append(", louable=");
 		builder.append(louable);
 		builder.append(", jeu=");
-		builder.append(jeu);
+		builder.append(jeuId);
 		builder.append("]");
 		return builder.toString();
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(codeBarre, id, jeu, louable);
+		return Objects.hash(codeBarre, id, jeuId, louable);
 	}
 
 	@Override
@@ -50,7 +59,7 @@ public class ExemplaireJeu {
 			return false;
 		ExemplaireJeu other = (ExemplaireJeu) obj;
 		return Objects.equals(codeBarre, other.codeBarre) && Objects.equals(id, other.id)
-				&& Objects.equals(jeu, other.jeu) && louable == other.louable;
+				&& Objects.equals(jeuId, other.jeuId) && louable == other.louable;
 	}
 
 	public Integer getId() {
@@ -77,12 +86,12 @@ public class ExemplaireJeu {
 		this.louable = louable;
 	}
 
-	public Jeu getJeu() {
-		return jeu;
+	public Integer getJeuId() {
+		return jeuId;
 	}
 
-	public void setJeu(Jeu jeu) {
-		this.jeu = jeu;
+	public void setJeuId(Integer jeuId) {
+		this.jeuId = jeuId;
 	}
 
 }
