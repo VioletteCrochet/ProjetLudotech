@@ -53,7 +53,7 @@ public class JeuController {
         Optional<Jeu> jeu = service.findById(id);
        
         List<ExemplaireJeu> exemplaires = exemplaireJeuService.findExemplaireByJeuId(id);
-        logger.debug(exemplaires.toString());
+//        logger.debug(exemplaires.toString());
         jeu.get().setExemplaires(exemplaires);
         if (jeu.isPresent()) {
             model.addAttribute("jeu", jeu.get());
@@ -61,8 +61,8 @@ public class JeuController {
             model.addAttribute("error", "Le jeu avec l'ID " + id + " n'a pas été trouvé.");
         }
         model.addAttribute("exemplaires", exemplaires);
-        model.addAttribute("exemplaire", new ExemplaireJeu());  // Ajoutez ceci
-        return "jeuDetail"; // Vue pour les détails du jeu
+        model.addAttribute("exemplaire", new ExemplaireJeu()); 
+        return "jeuDetail";
     }
 
     // Formulaire pour ajouter un nouveau jeu
@@ -76,7 +76,7 @@ public class JeuController {
 			return "redirect:/jeux";
 		}
         service.add(jeu);
-        logger.debug("requête addJeu passée au controller");
+//        logger.debug("requête addJeu passée au controller");
         return "redirect:/jeux"; // Vue pour ajouter ou modifier un jeu
     }
 

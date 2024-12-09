@@ -52,7 +52,7 @@ public class JeuRepositoryImpl implements JeuRepository {
 		int nbRows = namedParameterJdbcTemplate.update(sql, new BeanPropertySqlParameterSource(jeu), keyHolder,
 				new String[] { "id" });
 		jeu.setId(keyHolder.getKeyAs(Integer.class));
-		logger.debug("requête addjeu passée au repository");
+//		logger.debug("requête addjeu passée au repository");
 		if (nbRows != 1) {
 			throw new RuntimeException("Aucune ligne n'a été ajoutée pour le jeu: " + jeu);
 		}

@@ -43,9 +43,9 @@ public class ExemplaireJeuController {
 
 	@GetMapping("exemplaire/{id}")
 	public String displayExemplaire(Model model, @PathVariable(name="id")int id) {
-		Optional<ExemplaireJeu> exemplaire = service.findExemplaireById(id);
-		model.addAttribute("exemplaire", exemplaire.get());
-		logger.debug(exemplaire.toString());
+		Optional<ExemplaireJeu> optexemplaire = service.findExemplaireById(id);
+		ExemplaireJeu exemplaire = optexemplaire.get();
+	    model.addAttribute("exemplaire", exemplaire);
 		return "exemplaireDetail";
 	}
 
@@ -53,14 +53,30 @@ public class ExemplaireJeuController {
 	public String addExemplairetoJeu(@Valid @ModelAttribute("exemplaire") ExemplaireJeu exemplaireJeu,
 			BindingResult result, @PathVariable(name = "jeuId") int jeuId, Model model,
 			RedirectAttributes redirectAttr) {
-		int id = jeuId;
+		if (result.hasErrors()) {
+			logger.debug(exemplaireJeu.toString());
+			logger.debug(Integer.valueOf(jeuId).toString());
+			redirectAttr.addFlashAttribute("org.springframework.validation.BindingResult.exemplaire", result);
+			redirectAttr.addFlashAttribute("exemplaire", exemplaireJeu);
+			return "redirect:/exemplaire/" + jeuId; // Optional: Return to a form view to fix errors
+		}
+		
+		service.add(exemplaireJeu, jeuId);
+		return "redirect:/exemplaire/" + jeuId;
+
+	}
+	@PostMapping("updateExemplaire/{id}")
+	public String updateExemplaire(@Valid @ModelAttribute("exemplaire") ExemplaireJeu exemplaireJeu,
+			BindingResult result, Model model,
+			RedirectAttributes redirectAttr) {
+		logger.debug(exemplaireJeu.getJeuId().toString());
 		if (result.hasErrors()) {
 			redirectAttr.addFlashAttribute("org.springframework.validation.BindingResult.exemplaire", result);
 			redirectAttr.addFlashAttribute("exemplaire", exemplaireJeu);
-			return "redirect:/jeu/" + id; // Optional: Return to a form view to fix errors
+			return "redirect:/jeu/" + exemplaireJeu.getJeuId();
 		}
-		service.add(exemplaireJeu, jeuId);
-		return "redirect:/jeu/" + id;
+		service.update(exemplaireJeu);
+		return "redirect:/jeu/" + exemplaireJeu.getJeuId();
 
 	}
 

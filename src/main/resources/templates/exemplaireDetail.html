@@ -15,8 +15,28 @@
 			<span th:if="${!exemplaire.louable}">non</span>
 		</p>
 	</div>
-	<a th:href="@{/jeu/{id}(id=${exemplaire.jeuId})}">Retour au jeu</a>
-	<a href="/jeux">Retour à la liste de jeux</a>
-	
+	<a th:href="@{/jeu/{id}(id=${exemplaire.jeuId})}" role="button"
+		class="btn">Retour au jeu</a>
+	<a href="/jeux" role="button" class="btn">Retour à la liste de jeux</a>
+
+	<h2>modifier exemplaire</h2>
+	<form th:action="@{/updateExemplaire/{id}(id=${exemplaire.id})}" method="post" th:object="${exemplaire}">
+
+		<p>URL générée : <span th:text="@{/updateExemplaire/{id}(id=${exemplaire.id})}"></span></p>
+		<input type="hidden" th:field="*{id}">
+		<div>
+			<label for="codeBarre">Code Barre :</label> <input type="text"
+				id="codeBarre" th:field="*{codeBarre}" required>
+			<div th:if="${#fields.hasErrors('codeBarre')}"
+				th:errors="*{codeBarre}" class="error"></div>
+		</div>
+		<div>
+			<label for="louable">Louable :</label> <input type="checkbox"
+				id="louable" th:field="*{louable}">
+			<div th:if="${#fields.hasErrors('louable')}" th:errors="*{louable}"
+				class="error"></div>
+		</div>
+		<button type="submit">modifier</button>
+	</form>
 </body>
 </html>

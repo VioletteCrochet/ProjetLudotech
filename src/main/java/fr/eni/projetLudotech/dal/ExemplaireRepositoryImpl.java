@@ -19,13 +19,13 @@ import fr.eni.projetLudotech.bo.ExemplaireJeu;
 import fr.eni.projetLudotech.bo.Genre;
 
 @Repository
-public class ExemplaireRepositoryImpl implements ExemplaireRepository{
+public class ExemplaireRepositoryImpl implements ExemplaireRepository {
 
 	Logger logger = LoggerFactory.getLogger(ExemplaireRepositoryImpl.class);
-	
+
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 	private JdbcTemplate jdbcTemplate;
-	
+
 	public ExemplaireRepositoryImpl(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
 		super();
 		this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
@@ -35,14 +35,13 @@ public class ExemplaireRepositoryImpl implements ExemplaireRepository{
 	@Override
 	public void create(ExemplaireJeu exemplaire) {
 		String sql = "insert into ExemplaireJeux (codeBarre, louable, jeuId) values  (:codeBarre, :louable, :jeuId)";
-		
+
 		GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
 
 		int nbRows = namedParameterJdbcTemplate.update(sql, new BeanPropertySqlParameterSource(exemplaire), keyHolder,
-				new String[] {"id"});
+				new String[] { "id" });
 		exemplaire.setId(keyHolder.getKeyAs(Integer.class));
 
-		logger.debug(keyHolder.getKeyAs(Integer.class).toString());
 		if (nbRows != 1) {
 			throw new RuntimeException("Aucune ligne n'a été ajoutée pour l'exemplaire: " + exemplaire);
 		}
@@ -50,24 +49,28 @@ public class ExemplaireRepositoryImpl implements ExemplaireRepository{
 
 	@Override
 	public void update(ExemplaireJeu exemplaire) {
-		// TODO Auto-generated method stub
-		
+		String sql = "update ExemplaireJeux set codeBarre = :codeBarre, louable = :louable where id = :id;";
+
+		int nbRows = namedParameterJdbcTemplate.update(sql, new BeanPropertySqlParameterSource(exemplaire));
+
+		if (nbRows != 1) {
+			throw new RuntimeException("Aucune ligne n'a été mise à jour pour le client avec l'id: " + exemplaire.getId());
+		}
+
 	}
 
 	@Override
 	public List<ExemplaireJeu> findExemplaireByJeuid(Integer id) {
 		String sql = "select id, codeBarre, louable from ExemplaireJeux where jeuId = ?";
-		List<ExemplaireJeu> exemplaires = 
-				jdbcTemplate.query(sql, new ExemplaireRowMapper(), id);
-		logger.debug(id.toString());
-		logger.debug(exemplaires.toString());
+		List<ExemplaireJeu> exemplaires = jdbcTemplate.query(sql, new ExemplaireRowMapper(), id);
 		return exemplaires;
 	}
 
 	@Override
 	public Optional<ExemplaireJeu> findExemplaireById(Integer id) {
-		String sql ="select codebarre, louable, jeuId from ExemplaireJeux where id = ?" ;
-		ExemplaireJeu exemplaire = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<ExemplaireJeu>(ExemplaireJeu.class), id);
+		String sql = "select id, codebarre, louable, jeuId from ExemplaireJeux where id = ?";
+		ExemplaireJeu exemplaire = jdbcTemplate.queryForObject(sql,
+				new BeanPropertyRowMapper<ExemplaireJeu>(ExemplaireJeu.class), id);
 		return Optional.ofNullable(exemplaire);
 	}
 
@@ -78,7 +81,7 @@ public class ExemplaireRepositoryImpl implements ExemplaireRepository{
 			exemplaire.setId(rs.getInt("id"));
 			exemplaire.setCodeBarre(rs.getString("codeBarre"));
 			exemplaire.setLouable(rs.getBoolean("louable"));
-			
+
 			return exemplaire;
 		}
 	}

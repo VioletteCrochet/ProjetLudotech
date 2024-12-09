@@ -41,6 +41,12 @@ public class ExemplaireJeuServiceImpl implements ExemplaireJeuService{
 	public Optional<ExemplaireJeu> findExemplaireById(Integer id) {
 		return exemplaireRepo.findExemplaireById(id);
 	}
+
+	@Override
+	public void update(ExemplaireJeu exemplaireJeu) {
+		exemplaireRepo.update(exemplaireJeu);
+		
+	}
 	
 	
 	

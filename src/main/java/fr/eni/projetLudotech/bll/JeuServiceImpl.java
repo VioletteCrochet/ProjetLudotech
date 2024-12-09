@@ -68,7 +68,6 @@ public class JeuServiceImpl implements JeuService{
 	@Override
 	public void add(Jeu jeu) {
 		jeuRepo.create(jeu);
-		logger.debug("requête addJeu passée au service");
 	}
 }
 
