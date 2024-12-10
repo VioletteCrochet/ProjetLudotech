@@ -33,8 +33,7 @@ public class WebSecurityConfig {
 		//logger.debug("login");
 		http
 			.authorizeHttpRequests((requests) -> requests
-				.requestMatchers("/login","/").permitAll()
-				//.requestMatchers("/*/hello").hasAnyRole(null)
+				.requestMatchers("/login","/","/images/*").permitAll()
 				.anyRequest().authenticated()
 			)
 			.formLogin((form) -> form
@@ -43,7 +42,7 @@ public class WebSecurityConfig {
 				.permitAll()
 			)
 			.logout((logout) -> logout.permitAll());
-		logger.debug("login");
+		//logger.debug("login");
 		return http.build();
 	}
 

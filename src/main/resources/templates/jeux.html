@@ -5,8 +5,10 @@
 <title>Gestion des Jeux</title>
 </head>
 <body>
-	<h1>Ajouter ou Modifier un Jeu</h1>
-	<form action="/addJeu" method="post" th:object="${jeu}">
+	<h1 sec:authorize="hasRole('ROLE_ADMIN')">Ajouter ou Modifier un
+		Jeu</h1>
+	<form sec:authorize="hasRole('ROLE_ADMIN')" action="/addJeu"
+		method="post" th:object="${jeu}">
 		<div>
 			<label for="titre">Titre :</label> <input type="text"
 				th:field="*{titre}" id="titre">
@@ -85,7 +87,9 @@
 					th:text="${genre.libelle}"
 					th:unless="${#lists.isEmpty(jeu.genres)}">, </span></td>
 				<td><a th:href="@{/jeu/{id}(id=${jeu.id})}">Voir</a> | <a
+					sec:authorize="hasRole('ROLE_ADMIN')"
 					th:href="@{/deleteJeu/{id}(id=${jeu.id})}" method="post">Supprimer</a>
+					| <a sec:authorize="hasRole('ROLE_CLIENT')" method="post">louer</a>
 				</td>
 			</tr>
 		</tbody>

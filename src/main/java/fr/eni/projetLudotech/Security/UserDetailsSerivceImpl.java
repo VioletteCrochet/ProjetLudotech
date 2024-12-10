@@ -36,11 +36,7 @@ public class UserDetailsSerivceImpl implements UserDetailsService{
 		
 		if(!userRepo.findByUserName(username).isEmpty()) {
 			Utilisateur utilisateur = userRepo.findByUserName(username).get();	
-//				user = User.withDefaultPasswordEncoder()
-//					.username("bob")
-//					.password("password")
-//					.roles("USER", "ADMIN")
-//					.build();
+
 			 	user = User.builder()
 			 		.username(utilisateur.getUserName())
 			 		.password(utilisateur.getPassword())  //A aller chercher en BD

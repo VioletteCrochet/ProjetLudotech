@@ -18,8 +18,8 @@
         </p>
     </div>
 
-    <div th:if="${exemplaires != null}">
-        <h3>Exemplaires :</h3>
+    <div sec:authorize="hasRole('ROLE_ADMIN') || hasRole('ROLE_USER')" th:if="${exemplaires != null}">
+        <h3 >Exemplaires :</h3>
         <table border="1">
             <thead>
                 <tr>
@@ -37,8 +37,8 @@
             </tbody>
         </table>
 
-        <h3>Ajouter un Exemplaire de Jeu</h3>
-        <form th:action="@{/addExemplaire/{jeuId}(jeuId=${jeu.id})}" method="post" th:object="${exemplaire}">
+        <h3 sec:authorize="hasRole('ROLE_ADMIN') || hasRole('ROLE_USER')">Ajouter un Exemplaire de Jeu</h3>
+        <form  sec:authorize="hasRole('ROLE_ADMIN') || hasRole('ROLE_USER')" th:action="@{/addExemplaire/{jeuId}(jeuId=${jeu.id})}" method="post" th:object="${exemplaire}">
             <div>
                 <label for="codeBarre">Code Barre :</label>
                 <input type="text" id="codeBarre" th:field="*{codeBarre}" required>
@@ -57,8 +57,8 @@
         <p>Le jeu demandé n'a pas été trouvé.</p>
     </div>
 
-    <h2>Modifier le Jeu</h2>
-    <form th:action="@{/updateJeu/{id}(id=${jeu.id})}" th:object="${jeu}" method="post">
+    <h2 sec:authorize="hasRole('ROLE_ADMIN') || hasRole('ROLE_USER')">Modifier le Jeu</h2>
+    <form  sec:authorize="hasRole('ROLE_ADMIN') || hasRole('ROLE_USER')" th:action="@{/updateJeu/{id}(id=${jeu.id})}" th:object="${jeu}" method="post">
         <div>
             <label for="titre">Titre :</label>
             <input type="text" th:field="*{titre}" id="titre">
@@ -98,7 +98,8 @@
         </div>
         <button type="submit">Modifier</button>
     </form>
-    <a th:href="@{/deleteJeu/{id}(id=${jeu.id})}">Supprimer</a>
+    <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/deleteJeu/{id}(id=${jeu.id})}">Supprimer</a>
     <a href="/jeux">Retour à la liste des jeux</a>
+    <a sec:authorize="hasRole('ROLE_CLIENT')">louer</a>
 </body>
 </html>
