@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS  ExemplaireJeux, Clients, Jeux, Genres, Jeux_Genres;
+DROP TABLE IF EXISTS  ExemplaireJeux, Clients, Jeux, Genres, Jeux_Genres, Utilisateurs;
 
 -- CREATE USER ludouser WITH PASSWORD 'password';
 -- GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO ludouser;
@@ -46,6 +46,14 @@ CREATE TABLE ExemplaireJeux (
 	FOREIGN KEY (jeuId) REFERENCES Jeux(id)
 );
 
+CREATE TABLE Utilisateurs (
+	id serial Constraint PK_Utilisateurs PRIMARY KEY,
+    userName VARCHAR(20) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+	role VARCHAR(20) NOT NULL
+	
+);
+ 
 
 INSERT INTO Clients (nom, prenom, email, numTel, rue, cpo, ville) 
 VALUES 
@@ -84,6 +92,8 @@ values
 	('1254758474516', true, 2),
 	('1478748634516', false, 2);
 	
-
-
-select codebarre, louable, jeuId from ExemplaireJeux;
+insert into Utilisateurs (userName, password, role)
+values 
+	('bob', '$2a$10$tfz/GAIC1rPZRjkwy.ihluCa1lWdC8ruHY5rweoOjEEXAyrC4G32W','admin');
+	
+select * from Utilisateurs
