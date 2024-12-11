@@ -1,98 +1,169 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gestion des Jeux</title>
-</head>
-<body>
-	<h1 sec:authorize="hasRole('ROLE_ADMIN')">Ajouter ou Modifier un
-		Jeu</h1>
-	<form sec:authorize="hasRole('ROLE_ADMIN')" action="/addJeu"
-		method="post" th:object="${jeu}">
-		<div>
-			<label for="titre">Titre :</label> <input type="text"
-				th:field="*{titre}" id="titre">
-			<div th:if="${#fields.hasErrors('titre')}" th:errors="*{titre}"
-				class="error"></div>
-		</div>
-		<div>
-			<label for="reference">Référence :</label> <input type="text"
-				th:field="*{reference}" id="reference">
-			<div th:if="${#fields.hasErrors('reference')}"
-				th:errors="*{reference}" class="error"></div>
-		</div>
-		<div>
-			<label for="description">Description :</label>
-			<textarea th:field="*{description}" id="description"></textarea>
-			<div th:if="${#fields.hasErrors('description')}"
-				th:errors="*{description}" class="error"></div>
-		</div>
-		<div>
-			<label for="tarifJour">Tarif par jour :</label> <input type="text"
-				th:field="*{tarifJour}" id="tarifJour">
-			<div th:if="${#fields.hasErrors('tarifJour')}"
-				th:errors="*{tarifJour}" class="error"></div>
-		</div>
-		<div>
-			<label for="ageMin">Âge minimum :</label> <input type="number"
-				th:field="*{ageMin}" id="ageMin">
-			<div th:if="${#fields.hasErrors('ageMin')}" th:errors="*{ageMin}"
-				class="error"></div>
-		</div>
-		<div>
-			<label for="duree">Durée (minutes) :</label> <input type="number"
-				th:field="*{duree}" id="duree">
-			<div th:if="${#fields.hasErrors('duree')}" th:errors="*{duree}"
-				class="error"></div>
-		</div>
-		<div>
-			<label for="genres">Genres :</label> <select multiple
-				th:field="*{genres}" id="genres">
-				<option th:each="genre : ${@genreService.findAllGenres}"
-					th:value="${genre.id}" th:text="${genre.libelle}"></option>
-			</select>
-			<div style="color: red;" th:if="${#fields.hasErrors('genres')}">
-				<ul>
-					<li th:each="erreur: ${#fields.errors('genres')}"
-						th:text="${erreur}"></li>
-				</ul>
-			</div>
-		</div>
-		<button type="submit">Valider</button>
-	</form>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+	// Activer automatiquement le mode sombre selon les préférences système
+	tailwind.config = {
+		darkMode : 'class',
+	};
+</script>
+<script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Flashy Animated Background */
+        body {
 
-	<h1>Liste des Jeux</h1>
-	<table border="1">
-		<thead>
-			<tr>
-				<th>ID</th>
-				<th>Titre</th>
-				<th>Référence</th>
-				<th>Tarif</th>
-				<th>Âge Minimum</th>
-				<th>Durée</th>
-				<th>Genres</th>
-				<th>Actions</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr th:each="jeu : ${jeux}">
-				<td th:text="${jeu.id}"></td>
-				<td th:text="${jeu.titre}"></td>
-				<td th:text="${jeu.reference}"></td>
-				<td th:text="${jeu.tarifJour}"></td>
-				<td th:text="${jeu.ageMin}"></td>
-				<td th:text="${jeu.duree}"></td>
-				<td><span th:each="genre : ${jeu.genres}"
-					th:text="${genre.libelle}"
-					th:unless="${#lists.isEmpty(jeu.genres)}">, </span></td>
-				<td><a th:href="@{/jeu/{id}(id=${jeu.id})}">Voir</a> | <a
-					sec:authorize="hasRole('ROLE_ADMIN')"
-					th:href="@{/deleteJeu/{id}(id=${jeu.id})}" method="post">Supprimer</a>
-					| <a sec:authorize="hasRole('ROLE_CLIENT')" method="post">louer</a>
-				</td>
-			</tr>
-		</tbody>
-	</table>
+            background: linear-gradient(135deg, #ff00ff, #ff7700, #00ff00, #0000ff);
+            background-size: 400% 400%;
+            animation: backgroundGradient 8s infinite;
+        }
+
+        @keyframes backgroundGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-200 min-h-screen p-4">
+
+	<!-- Ajouter/Modifier un Jeu -->
+	<section
+		class="max-w-4xl mx-auto bg-gray-800 shadow-md rounded-lg p-6 mb-8">
+		<h1
+			class="text-2xl font-bold mb-6 sec:authorize='hasRole(\'ROLE_ADMIN\')'">
+			Ajouter ou Modifier un Jeu</h1>
+		<form sec:authorize="hasRole('ROLE_ADMIN')" action="/addJeu"
+			method="post" th:object="${jeu}" class="space-y-4">
+			<!-- Titre -->
+			<div>
+				<label for="titre" class="block text-sm font-medium">Titre :</label>
+				<input type="text" th:field="*{titre}" id="titre"
+					class="mt-1 block w-full bg-gray-900 border border-gray-700 text-gray-100 p-2 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" />
+				<div th:if="${#fields.hasErrors('titre')}" th:errors="*{titre}"
+					class="text-red-500 text-sm mt-1"></div>
+			</div>
+			<!-- Référence -->
+			<div>
+				<label for="reference" class="block text-sm font-medium">Référence
+					:</label> <input type="text" th:field="*{reference}" id="reference"
+					class="mt-1 block w-full bg-gray-900 border border-gray-700 text-gray-100 p-2 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" />
+				<div th:if="${#fields.hasErrors('reference')}"
+					th:errors="*{reference}" class="text-red-500 text-sm mt-1"></div>
+			</div>
+			<!-- Description -->
+			<div>
+				<label for="description" class="block text-sm font-medium">Description
+					:</label>
+				<textarea th:field="*{description}" id="description"
+					class="mt-1 block w-full bg-gray-900 border border-gray-700 text-gray-100 p-2 rounded-lg focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+				<div th:if="${#fields.hasErrors('description')}"
+					th:errors="*{description}" class="text-red-500 text-sm mt-1"></div>
+			</div>
+			<!-- Tarif par jour -->
+			<div>
+				<label for="tarifJour" class="block text-sm font-medium">Tarif
+					par jour :</label> <input type="text" th:field="*{tarifJour}"
+					id="tarifJour"
+					class="mt-1 block w-full bg-gray-900 border border-gray-700 text-gray-100 p-2 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" />
+				<div th:if="${#fields.hasErrors('tarifJour')}"
+					th:errors="*{tarifJour}" class="text-red-500 text-sm mt-1"></div>
+			</div>
+			<!-- Âge minimum -->
+			<div>
+				<label for="ageMin" class="block text-sm font-medium">Âge
+					minimum :</label> <input type="number" th:field="*{ageMin}" id="ageMin"
+					class="mt-1 block w-full bg-gray-900 border border-gray-700 text-gray-100 p-2 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" />
+				<div th:if="${#fields.hasErrors('ageMin')}" th:errors="*{ageMin}"
+					class="text-red-500 text-sm mt-1"></div>
+			</div>
+			<!-- Durée -->
+			<div>
+				<label for="duree" class="block text-sm font-medium">Durée
+					(minutes) :</label> <input type="number" th:field="*{duree}" id="duree"
+					class="mt-1 block w-full bg-gray-900 border border-gray-700 text-gray-100 p-2 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" />
+				<div th:if="${#fields.hasErrors('duree')}" th:errors="*{duree}"
+					class="text-red-500 text-sm mt-1"></div>
+			</div>
+			<!-- Genres -->
+			<div>
+				<label for="genres" class="block text-sm font-medium">Genres
+					:</label> <select multiple th:field="*{genres}" id="genres"
+					class="mt-1 block w-full bg-gray-900 border border-gray-700 text-gray-100 p-2 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+					<option th:each="genre : ${@genreService.findAllGenres}"
+						th:value="${genre.id}" th:text="${genre.libelle}"></option>
+				</select>
+				<div th:if="${#fields.hasErrors('genres')}"
+					class="text-red-500 text-sm mt-1">
+					<ul>
+						<li th:each="erreur : ${#fields.errors('genres')}"
+							th:text="${erreur}"></li>
+					</ul>
+				</div>
+			</div>
+			<!-- Bouton Valider -->
+			<button type="submit"
+				class="w-full bg-indigo-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+				Valider</button>
+		</form>
+	</section>
+
+	<!-- Liste des Jeux -->
+	<section class="max-w-5xl mx-auto bg-gray-800 shadow-md rounded-lg p-6">
+		<h1 class="text-2xl font-bold mb-6">Liste des Jeux</h1>
+		<table class="w-full text-left border-collapse border border-gray-700">
+			<thead>
+				<tr class="bg-gray-700 text-gray-100">
+					<th class="border border-gray-600 px-4 py-2">ID</th>
+					<th class="border border-gray-600 px-4 py-2">Titre</th>
+					<th class="border border-gray-600 px-4 py-2">Référence</th>
+					<th class="border border-gray-600 px-4 py-2">Tarif</th>
+					<th class="border border-gray-600 px-4 py-2">Âge Minimum</th>
+					<th class="border border-gray-600 px-4 py-2">Durée</th>
+					<th class="border border-gray-600 px-4 py-2">Genres</th>
+					<th class="border border-gray-600 px-4 py-2">Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="jeu : ${jeux}" class="hover:bg-gray-700">
+					<td th:text="${jeu.id}" class="border border-gray-600 px-4 py-2"></td>
+					<td th:text="${jeu.titre}" class="border border-gray-600 px-4 py-2"></td>
+					<td th:text="${jeu.reference}"
+						class="border border-gray-600 px-4 py-2"></td>
+					<td th:text="${jeu.tarifJour}"
+						class="border border-gray-600 px-4 py-2"></td>
+					<td th:text="${jeu.ageMin}"
+						class="border border-gray-600 px-4 py-2"></td>
+					<td th:text="${jeu.duree}" class="border border-gray-600 px-4 py-2"></td>
+					<td class="border border-gray-600 px-4 py-2">
+						<!-- Liste des genres dans une colonne -->
+						<ul class="list-disc pl-4">
+							<li th:each="genre : ${jeu.genres}" th:text="${genre.libelle}"
+								class="text-gray-300"></li>
+						</ul>
+					</td>
+					<td class="border border-gray-600 px-4 py-2"><a
+						th:href="@{/jeu/{id}(id=${jeu.id})}"
+						class="text-indigo-400 hover:underline">Voir</a> | <a
+						sec:authorize="hasRole('ROLE_ADMIN')"
+						th:href="@{/deleteJeu/{id}(id=${jeu.id})}"
+						class="text-red-400 hover:underline">Supprimer</a> | <a
+						sec:authorize="hasRole('ROLE_CLIENT')"
+						class="text-green-400 hover:underline">Louer</a></td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
+
+	<!-- Déconnexion -->
+	<form th:action="@{/logout}" method="post"
+		sec:authorize="isAuthenticated()" class="text-center mt-6">
+		<button type="submit"
+			class="bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700">Déconnexion</button>
+	</form>
 </body>
 </html>

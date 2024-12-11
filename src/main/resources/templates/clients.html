@@ -3,8 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Flashy Animated Background */
+        body {
+
+            background: linear-gradient(135deg, #ff00ff, #ff7700, #00ff00, #0000ff);
+            background-size: 400% 400%;
+            animation: backgroundGradient 8s infinite;
+        }
+
+        @keyframes backgroundGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+    </style>
 </head>
 <body>
+	<h1>Ajouter un client</h1>
 	 <form action="/addClient" method="post" th:object="${client}">
         <div>
             <label for="nom">Nom :</label>
@@ -43,6 +61,7 @@
         </div>
         <button type="submit">Valider</button>
     </form>
+    <h2>Liste des clients</h2>
 	<table>
 		<tr th:each="client : ${clients}">
 			<td th:text="${client.id}"></td>

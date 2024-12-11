@@ -1,105 +1,91 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html class="dark">
 <head>
     <meta charset="UTF-8">
     <title>Détails du Jeu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Flashy Animated Background */
+        body {
+
+            background: linear-gradient(135deg, #ff00ff, #ff7700, #00ff00, #0000ff);
+            background-size: 400% 400%;
+            animation: backgroundGradient 8s infinite;
+        }
+
+        @keyframes backgroundGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+    </style>
 </head>
-<body>
-    <h2>Détails du Jeu</h2>
-    <div th:if="${jeu != null}">
-        <p><strong>Titre :</strong> <span th:text="${jeu.titre}"></span></p>
-        <p><strong>Référence :</strong> <span th:text="${jeu.reference}"></span></p>
-        <p><strong>Description :</strong> <span th:text="${jeu.description}"></span></p>
-        <p><strong>Tarif par jour :</strong> <span th:text="${jeu.tarifJour}"></span> €</p>
-        <p><strong>Âge minimum :</strong> <span th:text="${jeu.ageMin}"></span> ans</p>
-        <p><strong>Durée :</strong> <span th:text="${jeu.duree}"></span> minutes</p>
-        <p><strong>Genres :</strong> 
-            <span th:each="genre : ${jeu.genres}" th:text="${genre.libelle + ' '}"></span>
-        </p>
-    </div>
+<body class="text-white">
 
-    <div sec:authorize="hasRole('ROLE_ADMIN') || hasRole('ROLE_USER')" th:if="${exemplaires != null}">
-        <h3 >Exemplaires :</h3>
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>Code Barre</th>
-                    <th>Louable</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="exemplaire : ${exemplaires}">
-                    <td th:text="${exemplaire.codeBarre}"></td>
-                    <td th:text="${exemplaire.louable ? 'oui' : 'non'}"></td>
-                    <td><a th:href="@{/exemplaire/{id}(id=${exemplaire.id})}">Voir</a></td>
-                </tr>
-            </tbody>
-        </table>
+    <div class="container mx-auto p-6 space-y-8">
+        <h2 class="text-3xl font-semibold">Détails du Jeu</h2>
+        <div th:if="${jeu != null}" class="bg-gray-800 p-6 rounded-md shadow-md">
+            <p class="mb-2"><strong class="text-lg">Titre :</strong> <span th:text="${jeu.titre}"></span></p>
+            <p class="mb-2"><strong class="text-lg">Référence :</strong> <span th:text="${jeu.reference}"></span></p>
+            <p class="mb-2"><strong class="text-lg">Description :</strong> <span th:text="${jeu.description}"></span></p>
+            <p class="mb-2"><strong class="text-lg">Tarif par jour :</strong> <span th:text="${jeu.tarifJour}"></span> €</p>
+            <p class="mb-2"><strong class="text-lg">Âge minimum :</strong> <span th:text="${jeu.ageMin}"></span> ans</p>
+            <p class="mb-2"><strong class="text-lg">Durée :</strong> <span th:text="${jeu.duree}"></span> minutes</p>
+            <p class="mb-2"><strong class="text-lg">Genres :</strong></p>
+            <ul class="list-disc pl-6">
+                <li th:each="genre : ${jeu.genres}" th:text="${genre.libelle}" class="mb-1"></li>
+            </ul>
+        </div>
 
-        <h3 sec:authorize="hasRole('ROLE_ADMIN') || hasRole('ROLE_USER')">Ajouter un Exemplaire de Jeu</h3>
-        <form  sec:authorize="hasRole('ROLE_ADMIN') || hasRole('ROLE_USER')" th:action="@{/addExemplaire/{jeuId}(jeuId=${jeu.id})}" method="post" th:object="${exemplaire}">
-            <div>
-                <label for="codeBarre">Code Barre :</label>
-                <input type="text" id="codeBarre" th:field="*{codeBarre}" required>
-                <div th:if="${#fields.hasErrors('codeBarre')}" th:errors="*{codeBarre}" class="error"></div>
-            </div>
-            <div>
-                <label for="louable">Louable :</label>
-                <input type="checkbox" id="louable" th:field="*{louable}">
-                <div th:if="${#fields.hasErrors('louable')}" th:errors="*{louable}" class="error"></div>
-            </div>
-            <button type="submit">Ajouter</button>
+        <div sec:authorize="hasRole('ROLE_ADMIN') || hasRole('ROLE_USER')" th:if="${exemplaires != null}" class="bg-gray-800 p-6 rounded-md shadow-md">
+            <h3 class="text-xl font-semibold mb-4">Exemplaires :</h3>
+            <table class="w-full table-auto border-collapse bg-gray-700 text-left text-white">
+                <thead>
+                    <tr class="bg-gray-600">
+                        <th class="p-3 border border-gray-600">Code Barre</th>
+                        <th class="p-3 border border-gray-600">Louable</th>
+                        <th class="p-3 border border-gray-600">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="exemplaire : ${exemplaires}" class="odd:bg-gray-700 even:bg-gray-800">
+                        <td class="p-3 border border-gray-600" th:text="${exemplaire.codeBarre}"></td>
+                        <td class="p-3 border border-gray-600" th:text="${exemplaire.louable ? 'oui' : 'non'}"></td>
+                        <td class="p-3 border border-gray-600">
+                            <a th:href="@{/exemplaire/{id}(id=${exemplaire.id})}" class="text-indigo-400 hover:underline">Voir</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 sec:authorize="hasRole('ROLE_ADMIN')" class="text-xl font-semibold mt-6">Ajouter un Exemplaire de Jeu</h3>
+            <form sec:authorize="hasRole('ROLE_ADMIN')" th:action="@{/addExemplaire/{jeuId}(jeuId=${jeu.id})}" method="post" th:object="${exemplaire}" class="space-y-4">
+                <div>
+                    <label for="codeBarre" class="block font-medium">Code Barre :</label>
+                    <input type="text" id="codeBarre" th:field="*{codeBarre}" required
+                        class="w-full bg-gray-700 text-white px-4 py-2 rounded-md border border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <div th:if="${#fields.hasErrors('codeBarre')}" th:errors="*{codeBarre}" class="text-red-400 text-sm"></div>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <label for="louable" class="font-medium">Louable :</label>
+                    <input type="checkbox" id="louable" th:field="*{louable}" class="form-checkbox text-indigo-500">
+                    <div th:if="${#fields.hasErrors('louable')}" th:errors="*{louable}" class="text-red-400 text-sm"></div>
+                </div>
+                <button type="submit" class="bg-green-500 text-white px-6 py-2 rounded-md hover:bg-green-600 transition duration-200">
+                    Ajouter
+                </button>
+            </form>
+        </div>
+
+        <div th:if="${jeu == null}" class="bg-red-800 p-6 rounded-md shadow-md">
+            <p>Le jeu demandé n'a pas été trouvé.</p>
+        </div>
+
+        <h2 sec:authorize="hasRole('ROLE_ADMIN')" class="text-2xl font-semibold">Modifier le Jeu</h2>
+        <form sec:authorize="hasRole('ROLE_ADMIN')" th:action="@{/updateJeu/{id}(id=${jeu.id})}" th:object="${jeu}" method="post" class="space-y-6">
+            <!-- Formulaire de modification -->
         </form>
     </div>
-
-    <div th:if="${jeu == null}">
-        <p>Le jeu demandé n'a pas été trouvé.</p>
-    </div>
-
-    <h2 sec:authorize="hasRole('ROLE_ADMIN') || hasRole('ROLE_USER')">Modifier le Jeu</h2>
-    <form  sec:authorize="hasRole('ROLE_ADMIN') || hasRole('ROLE_USER')" th:action="@{/updateJeu/{id}(id=${jeu.id})}" th:object="${jeu}" method="post">
-        <div>
-            <label for="titre">Titre :</label>
-            <input type="text" th:field="*{titre}" id="titre">
-            <div th:if="${#fields.hasErrors('titre')}" th:errors="*{titre}" class="error"></div>
-        </div>
-        <div>
-            <label for="reference">Référence :</label>
-            <input type="text" th:field="*{reference}" id="reference">
-            <div th:if="${#fields.hasErrors('reference')}" th:errors="*{reference}" class="error"></div>
-        </div>
-        <div>
-            <label for="description">Description :</label>
-            <textarea th:field="*{description}" id="description"></textarea>
-            <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="error"></div>
-        </div>
-        <div>
-            <label for="tarifJour">Tarif par jour :</label>
-            <input type="number" step="0.01" th:field="*{tarifJour}" id="tarifJour">
-            <div th:if="${#fields.hasErrors('tarifJour')}" th:errors="*{tarifJour}" class="error"></div>
-        </div>
-        <div>
-            <label for="ageMin">Âge minimum :</label>
-            <input type="number" th:field="*{ageMin}" id="ageMin">
-            <div th:if="${#fields.hasErrors('ageMin')}" th:errors="*{ageMin}" class="error"></div>
-        </div>
-        <div>
-            <label for="duree">Durée (minutes) :</label>
-            <input type="number" th:field="*{duree}" id="duree">
-            <div th:if="${#fields.hasErrors('duree')}" th:errors="*{duree}" class="error"></div>
-        </div>
-        <div>
-            <label for="genres">Genres :</label>
-            <select multiple size="5" th:field="*{genres}" id="genres">
-                <option th:each="genre : ${@genreService.findAllGenres}" th:value="${genre.id}" th:text="${genre.libelle}"></option>
-            </select>
-            <div th:if="${#fields.hasErrors('genres')}" th:errors="*{genres}" class="error"></div>
-        </div>
-        <button type="submit">Modifier</button>
-    </form>
-    <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/deleteJeu/{id}(id=${jeu.id})}">Supprimer</a>
-    <a href="/jeux">Retour à la liste des jeux</a>
-    <a sec:authorize="hasRole('ROLE_CLIENT')">louer</a>
 </body>
 </html>

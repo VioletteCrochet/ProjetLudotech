@@ -58,11 +58,11 @@ public class ExemplaireJeuController {
 			logger.debug(Integer.valueOf(jeuId).toString());
 			redirectAttr.addFlashAttribute("org.springframework.validation.BindingResult.exemplaire", result);
 			redirectAttr.addFlashAttribute("exemplaire", exemplaireJeu);
-			return "redirect:/exemplaire/" + jeuId; // Optional: Return to a form view to fix errors
+			return "redirect:/jeu/" + exemplaireJeu.getJeuId(); // Optional: Return to a form view to fix errors
 		}
 		
 		service.add(exemplaireJeu, jeuId);
-		return "redirect:/exemplaire/" + jeuId;
+		return "redirect:/jeu/" + exemplaireJeu.getJeuId();
 
 	}
 	@PostMapping("updateExemplaire/{id}")

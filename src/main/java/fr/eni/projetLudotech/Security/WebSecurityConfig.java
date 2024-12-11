@@ -34,6 +34,7 @@ public class WebSecurityConfig {
 		http
 			.authorizeHttpRequests((requests) -> requests
 				.requestMatchers("/login","/","/images/*").permitAll()
+				.requestMatchers("/client*").hasAnyRole("ADMIN","USER")
 				.anyRequest().authenticated()
 			)
 			.formLogin((form) -> form
@@ -41,7 +42,11 @@ public class WebSecurityConfig {
 				.defaultSuccessUrl("/jeux", true)
 				.permitAll()
 			)
-			.logout((logout) -> logout.permitAll());
+			.logout((logout) -> logout
+	                .logoutUrl("/logout") // URL de déconnexion
+	                .logoutSuccessUrl("/login?logout") // Redirection après déconnexion
+	                .permitAll() // Accessible sans authentification
+	            );
 		//logger.debug("login");
 		return http.build();
 	}

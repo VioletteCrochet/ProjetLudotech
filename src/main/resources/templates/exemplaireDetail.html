@@ -1,42 +1,70 @@
 <!DOCTYPE html>
-<html>
+<html class="dark">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8">
+    <title>Détails de l'Exemplaire</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Flashy Animated Background */
+        body {
+
+            background: linear-gradient(135deg, #ff00ff, #ff7700, #00ff00, #0000ff);
+            background-size: 400% 400%;
+            animation: backgroundGradient 8s infinite;
+        }
+
+        @keyframes backgroundGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+    </style>
 </head>
-<body>
-	<h2>Détails du Jeu</h2>
-	<div th:if="${exemplaire != null}">
-		<p>
-			<strong>Code barre :</strong> <span th:text="${exemplaire.codeBarre}"></span>
-		</p>
-		<p>
-			<strong>Louable :</strong> <span th:if="${exemplaire.louable}">oui</span>
-			<span th:if="${!exemplaire.louable}">non</span>
-		</p>
-	</div>
-	<a th:href="@{/jeu/{id}(id=${exemplaire.jeuId})}" role="button"
-		class="btn">Retour au jeu</a>
-	<a href="/jeux" role="button" class="btn">Retour à la liste de jeux</a>
+<body class="bg-gray-900 text-white">
 
-	<h2>modifier exemplaire</h2>
-	<form th:action="@{/updateExemplaire/{id}(id=${exemplaire.id})}" method="post" th:object="${exemplaire}">
+    <div class="container mx-auto p-6">
+        <h2 class="text-3xl font-semibold mb-6">Détails de l'Exemplaire</h2>
 
-		<p>URL générée : <span th:text="@{/updateExemplaire/{id}(id=${exemplaire.id})}"></span></p>
-		<input type="hidden" th:field="*{id}">
-		<div>
-			<label for="codeBarre">Code Barre :</label> <input type="text"
-				id="codeBarre" th:field="*{codeBarre}" required>
-			<div th:if="${#fields.hasErrors('codeBarre')}"
-				th:errors="*{codeBarre}" class="error"></div>
-		</div>
-		<div>
-			<label for="louable">Louable :</label> <input type="checkbox"
-				id="louable" th:field="*{louable}">
-			<div th:if="${#fields.hasErrors('louable')}" th:errors="*{louable}"
-				class="error"></div>
-		</div>
-		<button type="submit">modifier</button>
-	</form>
+        <div th:if="${exemplaire != null}" class="space-y-4">
+            <p><strong class="text-lg">Code barre :</strong> <span th:text="${exemplaire.codeBarre}"></span></p>
+            <p>
+                <strong class="text-lg">Louable :</strong>
+                <span th:if="${exemplaire.louable}" class="text-green-500">oui</span>
+                <span th:if="${!exemplaire.louable}" class="text-red-500">non</span>
+            </p>
+        </div>
+
+        <div class="mt-6 space-x-4">
+            <a th:href="@{/jeu/{id}(id=${exemplaire.jeuId})}" role="button"
+               class="bg-indigo-500 text-white px-4 py-2 rounded-md hover:bg-indigo-600 transition duration-200">
+                Retour au jeu
+            </a>
+            <a href="/jeux" role="button"
+               class="bg-gray-700 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition duration-200">
+                Retour à la liste des jeux
+            </a>
+        </div>
+
+        <h2 sec:authorize="hasRole('ROLE_ADMIN')" class="text-2xl font-semibold mt-8">Modifier l'Exemplaire</h2>
+        <form sec:authorize="hasRole('ROLE_ADMIN')" th:action="@{/updateExemplaire/{id}(id=${exemplaire.id})}" method="post" th:object="${exemplaire}" class="space-y-6 mt-4">
+            <div class="flex flex-col">
+                <label for="codeBarre" class="font-medium">Code Barre :</label>
+                <input type="text" id="codeBarre" th:field="*{codeBarre}" required
+                       class="bg-gray-700 text-white px-4 py-2 rounded-md border border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <div th:if="${#fields.hasErrors('codeBarre')}" th:errors="*{codeBarre}" class="text-red-400 text-sm"></div>
+            </div>
+            <div class="flex items-center">
+                <label for="louable" class="font-medium mr-2">Louable :</label>
+                <input type="checkbox" id="louable" th:field="*{louable}" class="form-checkbox text-indigo-500">
+                <div th:if="${#fields.hasErrors('louable')}" th:errors="*{louable}" class="text-red-400 text-sm"></div>
+            </div>
+            <button type="submit"
+                    class="bg-green-500 text-white px-6 py-2 rounded-md hover:bg-green-600 transition duration-200">
+                Modifier
+            </button>
+        </form>
+    </div>
+
 </body>
 </html>
