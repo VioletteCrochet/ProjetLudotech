@@ -3,6 +3,8 @@ package fr.eni.projetLudotech.bll;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,8 @@ import fr.eni.projetLudotech.exceptions.ClientNotFoundException;
 
 @Service
 public class ClientServiceImpl implements ClientService{
+	
+	Logger logger = LoggerFactory.getLogger(ClientServiceImpl.class);
 	
 	@Autowired
 	private ClientRepository clientRepo;
@@ -43,7 +47,14 @@ public class ClientServiceImpl implements ClientService{
 
 	@Override
 	public Optional<Client> findClientById(int id) {
-		return clientRepo.findClientById(id);
+		
+		try {
+			return clientRepo.findClientById(id);
+		} catch (ClientNotFoundException e) {
+			logger.warn(e.getMessage());
+			return Optional.empty();
+		}
+		
 	}
 
 

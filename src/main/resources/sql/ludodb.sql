@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS  ExemplaireJeux, Clients, Jeux, Genres, Jeux_Genres, Utilisateurs;
+DROP TABLE IF EXISTS  ExemplaireJeux, Clients, Jeux, Genres, Jeux_Genres, Utilisateurs, Locations;
 
 -- CREATE USER ludouser WITH PASSWORD 'password';
 -- GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO ludouser;
@@ -53,3 +53,11 @@ CREATE TABLE Utilisateurs (
 	role VARCHAR(20) NOT NULL
 	
 );
+
+-- create table Locations (
+-- 	id serial Constraint PK_Locations PRIMARY KEY,
+-- 	DateDebutLocation date,
+-- 	Payed boolean,
+-- 	totalPrice Decimal(10,2)
+-- 	);
+	

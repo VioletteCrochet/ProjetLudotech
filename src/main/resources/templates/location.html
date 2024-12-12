@@ -1,0 +1,46 @@
+package fr.eni.projetLudotech.controllers;
+
+import fr.eni.projetLudotech.bll.ClientService;
+import fr.eni.projetLudotech.bll.locations.LocationService;
+import fr.eni.projetLudotech.bo.Jeu;
+import fr.eni.projetLudotech.bo.Location;
+import jakarta.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+
+
+
+@Controller
+public class LocationController {
+
+    private final LocationService locationService;
+    private final ClientService clientService;
+
+    @Autowired
+    public LocationController(LocationService locationService, ClientService clientService) {
+        this.locationService = locationService;
+        this.clientService = clientService;
+    }
+
+    @ModelAttribute("location")
+    public Location createJeu() {
+        return new Location();
+    }
+    
+   
+    @GetMapping("/location/")
+    public String displaylocationForm(Model model) {
+        model.addAttribute("clients", clientService.findAllClients()); // Charger les clients pour la liste déroulante.
+        return "location";
+    }
+    
+    @Postmapping("/location/getClient")
+
+    
+}

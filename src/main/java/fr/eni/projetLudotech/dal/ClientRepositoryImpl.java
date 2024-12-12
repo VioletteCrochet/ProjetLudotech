@@ -17,6 +17,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 
 import fr.eni.projetLudotech.bo.Client;
+import fr.eni.projetLudotech.exceptions.ClientNotFoundException;
 
 @Repository
 public class ClientRepositoryImpl implements ClientRepository {
@@ -57,7 +58,7 @@ public class ClientRepositoryImpl implements ClientRepository {
 	}
 
 	@Override
-	public Optional<Client> findClientById(int id) {
+	public Optional<Client> findClientById(int id) throws ClientNotFoundException{
 		String sql = "select id, nom, prenom, email, numTel, rue, cpo, ville from Clients where id = :id";
 
 		// Création du Map pour les paramètres nommés
@@ -69,8 +70,7 @@ public class ClientRepositoryImpl implements ClientRepository {
 					new BeanPropertyRowMapper<>(Client.class));
 			return Optional.ofNullable(client);
 		} catch (EmptyResultDataAccessException e) {
-			
-			return Optional.empty();
+			throw new ClientNotFoundException();
 		}
 	}
 
