@@ -5,19 +5,31 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import jakarta.validation.constraints.NotNull;
+
 public class Location {
 	private Integer id;
 	private LocalDate dateDebutLocation;
-	private boolean isPayed;
+	private boolean Payed;
 	private float TotalPrice;
+	@NotNull
 	private List<DetailLocation> details = new ArrayList<>();
+	@NotNull
+	private Client client;
 
-	public Location(Integer id, LocalDate dateDebutLocation, boolean isPayed, float totalPrice,
+	public Location(LocalDate dateDebutLocation, List<DetailLocation> details, Client client) {
+		super();
+		this.dateDebutLocation = dateDebutLocation;
+		this.details = details;
+		this.client = client;
+	}
+
+	public Location(Integer id, LocalDate dateDebutLocation, boolean Payed, float totalPrice,
 			List<DetailLocation> details) {
 		super();
 		this.id = id;
 		this.dateDebutLocation = dateDebutLocation;
-		this.isPayed = isPayed;
+		this.Payed = Payed;
 		TotalPrice = totalPrice;
 		this.details = details;
 	}
@@ -31,9 +43,13 @@ public class Location {
 		super();
 		this.id = id;
 		this.dateDebutLocation = dateDebutLocation;
-		this.isPayed = isPayed;
+		this.Payed = isPayed;
 	}
 
+	public void addDetail(DetailLocation detail) {
+		this.details.add(detail);
+	}
+	
 	public Integer getId() {
 		return id;
 	}
@@ -51,11 +67,11 @@ public class Location {
 	}
 
 	public boolean isPayed() {
-		return isPayed;
+		return Payed;
 	}
 
 	public void setPayed(boolean isPayed) {
-		this.isPayed = isPayed;
+		this.Payed = isPayed;
 	}
 
 	public float getTotalPrice() {
@@ -91,7 +107,7 @@ public class Location {
 		builder.append(", dateDebutLocation=");
 		builder.append(dateDebutLocation);
 		builder.append(", isPayed=");
-		builder.append(isPayed);
+		builder.append(Payed);
 		builder.append(", TotalPrice=");
 		builder.append(TotalPrice);
 		builder.append("]");
@@ -104,6 +120,14 @@ public class Location {
 
 	public void setDetails(List<DetailLocation> details) {
 		this.details = details;
+	}
+
+	public Client getClient() {
+		return client;
+	}
+
+	public void setClient(Client client) {
+		this.client = client;
 	}
 
 }

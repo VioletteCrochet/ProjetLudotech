@@ -53,3 +53,12 @@ CREATE TABLE Utilisateurs (
 	role VARCHAR(20) NOT NULL
 	
 );
+
+create table Locations (
+	id serial Constraint PK_Locations,
+	DateDebutLocation date,
+	Payed boolean,
+	totalPrice Decimal(10,2),
+	
+	
+)

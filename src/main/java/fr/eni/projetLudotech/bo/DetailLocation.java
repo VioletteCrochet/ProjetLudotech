@@ -8,19 +8,16 @@ public class DetailLocation {
 	private LocalDate dateRetour;
 	private float TarifLocation;
 	private Location location;
-	private Jeu jeu;
-	private Client client;
+	private ExemplaireJeu exemplaireJeu;
 	
 	
-	public DetailLocation(Integer numLigne, LocalDate dateRetour, float tarifLocation, Location location, Jeu jeu,
-			Client client) {
+	public DetailLocation(Integer numLigne, LocalDate dateRetour, float tarifLocation, Location location, ExemplaireJeu exemplaireJeu) {
 		super();
 		this.numLigne = numLigne;
 		this.dateRetour = dateRetour;
 		TarifLocation = tarifLocation;
 		this.location = location;
-		this.jeu = jeu;
-		this.client = client;
+		this.exemplaireJeu = exemplaireJeu;
 	}
 
 	public DetailLocation() {
@@ -29,15 +26,14 @@ public class DetailLocation {
 	}
 	
 	
-	
-	public DetailLocation(Integer numLigne, float tarifLocation, Location location, Jeu jeu, Client client) {
+	public DetailLocation(Integer numLigne, float tarifLocation, Location location, ExemplaireJeu exemplaireJeu) {
 		super();
 		this.numLigne = numLigne;
 		TarifLocation = tarifLocation;
 		this.location = location;
-		this.jeu = jeu;
-		this.client = client;
+		this.exemplaireJeu = exemplaireJeu;
 	}
+
 	public Integer getNumLigne() {
 		return numLigne;
 	}
@@ -62,11 +58,11 @@ public class DetailLocation {
 	public void setLocation(Location location) {
 		this.location = location;
 	}
-	public Jeu getJeux() {
-		return jeu;
+	public ExemplaireJeu getExemplaireJeu() {
+		return exemplaireJeu;
 	}
-	public void setJeux(Jeu jeu) {
-		this.jeu = jeu;
+	public void setExemplaireJeu(ExemplaireJeu exemplaireJeu) {
+		this.exemplaireJeu = exemplaireJeu;
 	}
 	@Override
 	public String toString() {
@@ -80,7 +76,7 @@ public class DetailLocation {
 		builder.append(", location=");
 		builder.append(location);
 		builder.append(", jeux=");
-		builder.append(jeu);
+		builder.append(exemplaireJeu);
 		builder.append("]");
 		return builder.toString();
 	}
@@ -100,22 +96,4 @@ public class DetailLocation {
 		return Objects.equals(location, other.location) && Objects.equals(numLigne, other.numLigne);
 	}
 
-	public Jeu getJeu() {
-		return jeu;
-	}
-
-	public void setJeu(Jeu jeu) {
-		this.jeu = jeu;
-	}
-
-	public Client getClient() {
-		return client;
-	}
-
-	public void setClient(Client client) {
-		this.client = client;
-	}
-	
-	
-	
 }
