@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.springframework.stereotype.Service;
+
 import fr.eni.projetLudotech.bo.Client;
 import fr.eni.projetLudotech.bo.DetailLocation;
 import fr.eni.projetLudotech.bo.ExemplaireJeu;
@@ -14,6 +16,7 @@ import fr.eni.projetLudotech.dal.ExemplaireRepository;
 import fr.eni.projetLudotech.dal.JeuRepository;
 import fr.eni.projetLudotech.dal.locations.LocationRepository;
 
+@Service
 public class LocationServiceImpl implements LocationService {
 
 	private LocationRepository locaRepo;
